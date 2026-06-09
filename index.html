@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MJ Prompt Generator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+--bg:#0f0f14;--surface:#1a1a24;--surface2:#22223a;--surface3:#2a2a42;
+--accent:#6c5ce7;--accent2:#a29bfe;--accent3:#fd79a8;
+--text:#e8e8f0;--text2:#a0a0b8;--text3:#6c6c88;
+--border:#2d2d48;--success:#00b894;--danger:#e17055;--warn:#fdcb6e;
+--radius:8px;--radius2:12px;
+}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+
+/* Fixed top area */
+.fixed-top{position:fixed;top:0;left:0;right:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.4);}
+.fixed-top-inner{max-width:1100px;margin:0 auto;padding:8px 16px;}
+
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:4px 06px;}
+.app-title{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-actions{display:flex;gap:6px;align-items:center;}
+.icon-btn{width:32px;height:32px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--surface3);}
+.collapse-btn{font-size:11px;width:auto;padding:0 8px;gap:3px;}
+.collapse-btn span.arrow{transition:transform .2s;display:inline-block;font-size:10px;}
+.collapse-btn.collapsed span.arrow{transform:rotate(180deg);}
+
+.status-bar{display:flex;align-items:center;gap:6px;padding:2px 0;font-size:10px;color:var(--text3);}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--danger);}
+.status-dot.connected{background:var(--success);}
+
+/* Compact Params Bar */
+.params-bar{display:flex;flex-wrap:wrap;gap:5px 10px;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);align-items:center;font-size:12px;margin-top:4px;overflow:hidden;transition:max-height .3s ease,padding .3s ease,margin .3s ease,opacity .3s ease;}
+.params-bar.collapsed{max-height:0;padding:0 10px;margin-top:0;border-color:transparent;opacity:0;}
+.param-group{display:flex;align-items:center;gap:4px;}
+.param-label{white-space:nowrap;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;}
+.pill-group{display:flex;gap:3px;}
+.pill{padding:2px 10px;border:1px solid var(--border);border-radius:16px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;white-space:nowrap;line-height:1.6;}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.pill:hover:not(.active){border-color:var(--accent2);color:var(--accent2);}
+.stylize-input{width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;}
+.stylize-input:focus{outline:none;border-color:var(--accent);}
+.toggle-switch{position:relative;width:32px;height:17px;cursor:pointer;}
+.toggle-switch input{display:none;}
+.toggle-slider{position:absolute;inset:0;background:var(--surface3);border-radius:17px;transition:.2s;}
+.toggle-slider::before{content:'';position:absolute;width:13px;height:13px;border-radius:50%;background:var(--text3);top:2px;left:2px;transition:.2s;}
+.toggle-switch input:checked+.toggle-slider{background:var(--accent);}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(15px);background:#fff;}
+.count-select,.token-select,.ar-select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;}
+.count-select:focus,.token-select:focus,.ar-select:focus{outline:none;border-color:var(--accent);}
+.param-divider{width:1px;height:18px;background:var(--border);margin:0 2px;}
+.ar-custom-input{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;display:none;}
+.ar-custom-input:focus{outline:none;border-color:var(--accent);}
+.token-custom-input{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;display:none;}
+.token-custom-input:focus{outline:none;border-color:var(--accent);}
+
+/* Scrollable content area */
+.scroll-content{max-width:1100px;margin:0 auto;padding:12px 16px;}
+
+/* Input Section */
+.input-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;margin-bottom:10px;}
+.tags-area{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;align-items:center;}
+.tag{padding:2px 9px;border:1px solid var(--border);border-radius:14px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;display:flex;align-items:center;gap:4px;}
+.tag.selected{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tag:hover:not(.selected){border-color:var(--accent2);}
+.tag .remove-tag{font-size:9px;opacity:.6;cursor:pointer;}
+.tag .remove-tag:hover{opacity:1;}
+.add-tag-btn{width:24px;height:24px;border:1px dashed var(--border);border-radius:50%;background:transparent;color:var(--text3);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.add-tag-btn:hover{border-color:var(--accent);color:var(--accent);}
+.input-row{display:flex;gap:8px;}
+.prompt-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:8px 12px;font-size:13px;resize:none;min-height:44px;max-height:100px;font-family:inherit;line-height:1.5;}
+.prompt-input:focus{outline:none;border-color:var(--accent);}
+.prompt-input::placeholder{color:var(--text3);}
+.action-btns{display:flex;flex-direction:column;gap:5px;}
+.btn{padding:7px 16px;border:none;border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;transition:.2s;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-secondary{background:var(--surface3);color:var(--text2);border:1px solid var(--border);}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Results */
+.results-section{min-height:180px;}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;position:relative;cursor:pointer;transition:.2s;min-height:90px;}
+.result-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 20px rgba(108,92,231,.15);}
+.result-card .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.result-card .card-index{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+.swap-btn{width:22px;height:22px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text3);cursor:pointer;font-size:11px;transition:.2s;display:flex;align-items:center;justify-content:center;}
+.swap-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.result-text{font-size:12px;line-height:1.6;color:var(--text);word-break:break-word;}
+.copy-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:8px 24px;border-radius:20px;font-size:13px;z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;}
+.copy-toast.show{opacity:1;}
+
+.user-prompt-display{margin-top:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text2);display:none;}
+.user-prompt-display .label{font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Modal Common */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);width:90%;max-width:680px;max-height:85vh;overflow-y:auto;padding:20px;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.modal-title{font-size:15px;font-weight:700;color:var(--text);}
+.modal-close{width:28px;height:28px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:var(--surface3);color:var(--text);}
+
+/* Settings Tabs */
+.settings-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);}
+.settings-tab{padding:8px 20px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s;}
+.settings-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.settings-tab:hover:not(.active){color:var(--text2);}
+.settings-panel{display:none;}
+.settings-panel.active{display:block;}
+
+.settings-section{margin-bottom:18px;}
+.settings-section-title{font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;}
+.form-group{margin-bottom:10px;}
+.form-label{font-size:11px;color:var(--text3);margin-bottom:3px;display:block;}
+.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:7px 10px;font-size:12px;}
+.form-input:focus{outline:none;border-color:var(--accent);}
+.form-row{display:flex;gap:8px;align-items:flex-end;}
+.form-row .form-group{flex:1;}
+
+.api-key-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;font-size:12px;cursor:pointer;transition:.2s;}
+.api-key-item:hover{border-color:var(--accent2);}
+.api-key-item .key-name{font-weight:600;color:var(--accent2);min-width:55px;}
+.api-key-item .key-url{color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.api-key-item .key-actions{display:flex;gap:4px;}
+.small-btn{padding:2px 7px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text3);cursor:pointer;font-size:10px;transition:.2s;}
+.small-btn:hover{border-color:var(--accent);color:var(--accent);}
+.small-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
+.small-btn.active-key{border-color:var(--success);color:var(--success);}
+
+.model-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:7px 10px;font-size:12px;}
+.model-select:focus{outline:none;border-color:var(--accent);}
+.saved-model-item{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:16px;margin:0 4px 4px 0;font-size:11px;cursor:pointer;transition:.2s;}
+.saved-model-item:hover{border-color:var(--accent);}
+.saved-model-item.active-model{border-color:var(--success);color:var(--success);}
+.saved-model-item .remove-model{font-size:9px;opacity:.6;cursor:pointer;margin-left:2px;}
+.saved-model-item .remove-model:hover{opacity:1;color:var(--danger);}
+
+/* Preset */
+.preset-item{padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;cursor:pointer;transition:.2s;}
+.preset-item:hover{border-color:var(--accent2);}
+.preset-header{display:flex;justify-content:space-between;align-items:center;}
+.preset-name{font-size:12px;font-weight:600;color:var(--text);}
+.preset-actions{display:flex;gap:4px;align-items:center;}
+.preset-entries{margin-top:8px;display:none;padding-top:8px;border-top:1px solid var(--border);}
+.preset-entries.show{display:block;}
+.entry-item{display:flex;align-items:flex-start;gap:6px;padding:5px 7px;background:var(--bg);border-radius:var(--radius);margin-bottom:4px;font-size:11px;}
+.entry-role{min-width:45px;color:var(--accent3);font-weight:600;text-transform:capitalize;}
+.entry-content{flex:1;color:var(--text2);line-height:1.4;max-height:55px;overflow-y:auto;word-break:break-word;}
+.entry-actions{display:flex;gap:3px;flex-shrink:0;}
+
+/* History */
+.history-item{padding:9px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;cursor:pointer;transition:.2s;}
+.history-item:hover{border-color:var(--accent2);}
+.history-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.history-item-name{font-size:12px;font-weight:600;color:var(--text);}
+.history-item-time{font-size:10px;color:var(--text3);}
+.history-item-preview{font-size:11px;color:var(--text2);line-height:1.4;max-height:36px;overflow:hidden;}
+.history-detail{display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.history-detail.show{display:block;}
+.history-results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;margin-top:6px;}
+.history-result-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px;cursor:pointer;font-size:11px;line-height:1.5;transition:.2s;}
+.history-result-card:hover{border-color:var(--accent);}
+
+/* Confirm */
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;}
+.confirm-overlay.show{display:flex;}
+.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;max-width:340px;width:90%;text-align:center;}
+.confirm-box p{font-size:13px;color:var(--text);margin-bottom:14px;line-height:1.5;}
+.confirm-actions{display:flex;gap:8px;justify-content:center;}
+
+/* Loading */
+.loading-indicator{display:none;text-align:center;padding:36px;color:var(--text3);}
+.loading-indicator.show{display:block;}
+.loading-dots{display:inline-flex;gap:4px;}
+.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:loadPulse 1.2s infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes loadPulse{0%,80%,100%{opacity:.3;transform:scale(.8);}40%{opacity:1;transform:scale(1.2);}}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);}
+.empty-state .empty-icon{font-size:32px;margin-bottom:10px;opacity:.4;}
+.empty-state p{font-size:12px;}
+
+@media(max-width:640px){
+.params-bar{gap:4px 8px;}
+.param-divider{width:100%;height:1px;margin:2px 0;}
+.results-grid{grid-template-columns:1fr;}
+.input-row{flex-direction:column;}
+.action-btns{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+
+<!-- Fixed Top Section -->
+<div class="fixed-top" id="fixedTop">
+  <div class="fixed-top-inner">
+    <div class="app-header">
+      <div class="app-title">MJ Prompt Generator</div>
+      <div class="header-actions">
+        <button class="icon-btn collapse-btn" id="collapseBtn" onclick="toggleParamsCollapse()" title="折叠/展开参数">
+          <span class="arrow">▲</span>
+        </button>
+        <button class="icon-btn" onclick="openHistory()" title="历史记录">📋</button>
+        <button class="icon-btn" onclick="openSettings()" title="设置">⚙</button>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">未连接</span>
+      <span style="margin-left:auto;" id="modelDisplay"></span>
+    </div>
+
+    <!-- Compact Params Bar -->
+    <div class="params-bar" id="paramsBar">
+      <div class="param-group">
+        <span class="param-label">Model</span>
+        <div class="pill-group">
+          <button class="pill active" data-param="model" data-val="--niji 7" onclick="setParam(this)">Niji 7</button>
+          <button class="pill" data-param="model" data-val="--niji 6" onclick="setParam(this)">Niji 6</button>
+        </div>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">Stylize</span>
+        <input type="number" class="stylize-input" id="stylizeVal" value="350" min="0" max="1000" onchange="saveParams()">
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">AR</span>
+        <select class="ar-select" id="arSelect" onchange="handleArChange()">
+          <option value="9:16" selected>9:16</option>
+          <option value="16:9">16:9</option>
+          <option value="1:1">1:1</option><option value="4:3">4:3</option>
+          <option value="3:4">3:4</option>
+          <option value="2:3">2:3</option>
+          <option value="3:2">3:2</option>
+          <option value="custom">自定义</option>
+        </select>
+        <input type="text" class="ar-custom-input" id="arCustomInput" placeholder="W:H" onchange="saveParams()">
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">Raw</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="rawToggle" onchange="saveParams()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">性别</span>
+        <div class="pill-group">
+          <button class="pill active" data-param="gender" data-val="male" onclick="setParam(this)">男</button>
+          <button class="pill" data-param="gender" data-val="female" onclick="setParam(this)">女</button>
+        </div>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">风格</span>
+        <div class="pill-group">
+          <button class="pill" data-param="style" data-val="off" onclick="setParam(this)">关</button>
+          <button class="pill active" data-param="style" data-val="impasto" onclick="setParam(this)">厚涂</button>
+          <button class="pill" data-param="style" data-val="anime_flat" onclick="setParam(this)">平涂</button>
+        </div>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">组数</span>
+        <select class="count-select" id="groupCount" onchange="saveParams()">
+          <option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+        </select>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">Token</span>
+        <select class="token-select" id="tokenSelect" onchange="handleTokenChange()">
+          <option value="none" selected>无</option>
+          <option value="100">100+</option>
+          <option value="150">150+</option>
+          <option value="200">200+</option>
+          <option value="250">250+</option>
+          <option value="300">300+</option>
+          <option value="custom">自定义</option>
+        </select>
+        <input type="number" class="token-custom-input" id="tokenCustomInput" placeholder="数值" min="50" max="2000" onchange="saveParams()">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scrollable Content -->
+<div class="scroll-content" id="scrollContent">
+  <!-- Input Section -->
+  <div class="input-section">
+    <div class="tags-area" id="tagsArea">
+      <button class="add-tag-btn" onclick="addTagPrompt()" title="添加快捷标签">+</button>
+    </div>
+    <div class="input-row">
+      <textarea class="prompt-input" id="promptInput" placeholder="输入画面描述，或输入「随机」生成随机关键词..." rows="2"></textarea>
+      <div class="action-btns">
+        <button class="btn btn-primary" onclick="handleGenerate()">生成</button>
+        <button class="btn btn-secondary" onclick="handleRefresh()">刷新</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-section">
+    <div class="loading-indicator" id="loadingIndicator">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p style="margin-top:8px;font-size:11px;">正在生成关键词...</p>
+    </div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">✦</div>
+      <p>输入描述后点击生成，关键词将显示在此处</p>
+    </div>
+  </div>
+
+  <div class="user-prompt-display" id="userPromptDisplay">
+    <div class="label">当前指令</div>
+    <div id="userPromptText"></div>
+  </div>
+</div>
+
+<div class="copy-toast" id="copyToast">已复制到剪贴板</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">设置</div>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+
+    <div class="settings-tabs">
+      <div class="settings-tab active" onclick="switchSettingsTab('api',this)">API 配置</div>
+      <div class="settings-tab" onclick="switchSettingsTab('preset',this)">预设管理</div>
+    </div>
+
+    <!-- API Panel -->
+    <div class="settings-panel active" id="panelApi">
+      <div class="settings-section">
+        <div class="settings-section-title">密钥管理</div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">名称</label><input class="form-input" id="apiName" placeholder="My API"></div>
+          <div class="form-group"><label class="form-label">URL</label><input class="form-input" id="apiUrl" placeholder="https://api.openai.com/v1"></div>
+        </div>
+        <div class="form-group"><label class="form-label">API Key</label><input class="form-input" id="apiKey" type="password" placeholder="sk-..."></div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="btn btn-primary" onclick="saveApiKey()" style="font-size:11px;padding:5px 12px;">保存密钥</button>
+          <button class="btn btn-secondary" onclick="connectApi()" style="font-size:11px;padding:5px 12px;">连接并获取模型</button>
+        </div>
+        <div id="apiKeysList"></div>
+      </div><div class="settings-section">
+        <div class="settings-section-title">模型选择</div>
+        <div class="form-group" id="modelSelectGroup" style="display:none;">
+          <label class="form-label">可用模型</label>
+          <div style="display:flex;gap:6px;align-items:flex-end;">
+            <select class="model-select" id="modelSelect" style="flex:1;"></select>
+            <button class="btn btn-secondary" onclick="saveModelToList()" style="font-size:11px;padding:5px 10px;">保存模型</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">已保存模型</label>
+          <div id="savedModelsList" style="margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preset Panel -->
+    <div class="settings-panel" id="panelPreset">
+      <div class="settings-section">
+        <div class="settings-section-title">预设管理</div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;">
+          <button class="btn btn-secondary" onclick="document.getElementById('presetFileInput').click()" style="font-size:11px;padding:5px 12px;">导入预设 (JSON)</button>
+          <input type="file" id="presetFileInput" accept=".json" style="display:none;" onchange="importPreset(event)">
+        </div>
+        <div id="presetsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- History Modal -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">历史记录</div>
+      <button class="modal-close" onclick="closeHistory()">✕</button>
+    </div>
+    <div id="historyList"></div><div class="empty-state" id="historyEmpty" style="padding:20px;">
+      <p>暂无历史记录</p>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmDialog">
+  <div class="confirm-box">
+    <p id="confirmText">是否保存当前生成的关键词到历史记录？</p>
+    <div class="confirm-actions">
+      <button class="btn btn-primary" onclick="confirmSave(true)" style="font-size:11px;">保存</button>
+      <button class="btn btn-secondary" onclick="confirmSave(false)" style="font-size:11px;">不保存</button>
+      <button class="btn btn-secondary" onclick="cancelConfirm()" style="font-size:11px;">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Entry Modal -->
+<div class="modal-overlay" id="editEntryModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div class="modal-title">编辑条目</div>
+      <button class="modal-close" onclick="closeEditEntry()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">角色</label><input class="form-input" id="editEntryRole"></div>
+    <div class="form-group"><label class="form-label">内容</label><textarea class="form-input" id="editEntryContent" rows="6" style="resize:vertical;"></textarea></div>
+    <button class="btn btn-primary" onclick="saveEditedEntry()" style="margin-top:8px;font-size:11px;">保存</button>
+  </div>
+</div>
+
+<script>
+let state = {
+  params: { model:'--niji 7', stylize:350, raw:false, gender:'male', style:'impasto', groupCount:3, ar:'9:16', arCustom:'', tokenLimit:'none', tokenCustom:'' },
+  paramsCollapsed: false,
+  tags: [],
+  apiKeys: [],
+  activeApiIndex: -1,
+  selectedModel: '',
+  savedModels: [],
+  models: [],
+  presets: [],
+  history: [],
+  lastPrompt: '',
+  currentResults: [],
+  connected: false
+};
+
+const STORAGE_KEY = 'mj_prompt_gen_state';
+
+//===== FIXED TOP HEIGHT CALC =====
+function updateScrollPadding() {
+  const fixedH = document.getElementById('fixedTop').offsetHeight;
+  document.getElementById('scrollContent').style.paddingTop = (fixedH + 10) + 'px';
+}
+
+// ===== COLLAPSE =====
+function toggleParamsCollapse() {
+  state.paramsCollapsed = !state.paramsCollapsed;
+  const bar = document.getElementById('paramsBar');
+  const btn = document.getElementById('collapseBtn');
+  if (state.paramsCollapsed) {
+    bar.classList.add('collapsed');
+    btn.classList.add('collapsed');
+  } else {
+    bar.classList.remove('collapsed');
+    btn.classList.remove('collapsed');
+  }
+  saveState();
+  setTimeout(updateScrollPadding, 350);
+}
+
+//===== SYSTEM PROMPT =====
+function buildSystemPrompt() {
+  const genderText = state.params.gender === 'male' ? '男性' : '女性';
+  let styleText = '';
+  if (state.params.style === 'impasto') {
+    styleText = '厚涂风格，画面质感厚重，具有油画般的肌理与光影层次';
+  } else if (state.params.style === 'anime_flat') {
+    styleText = '二次元平涂风格，线条清晰，色块分明，日系动画画风';
+  }
+  const count = state.params.groupCount;
+  const arVal = getArValue();
+
+  let tokenInstruction = '';
+  const tokenVal = getTokenValue();
+  if (tokenVal) {
+    tokenInstruction = `\n- 每组提示词的文本长度应在 ${tokenVal} token 以上。`;
+  }
+
+  let systemContent = `你是一个专门用于生成Midjourney绘画提示词的助手。你的唯一任务是根据用户需求输出高质量的生图关键词。
+
+核心能力：精通MJ/Niji模型的提示词结构与权重逻辑，擅长构建画面描述，精准的中英文画面转译能力。
+
+严格规则：
+-禁止输出任何对话、问候、心理活动或解释性文字。
+- 只输出关键词组，不要任何额外说明。
+- 若用户输入模糊，自动补充高审美细节（如：光影、材质、构图）。
+- 角色性别锁定为：${genderText}。${styleText ? '\n- 画面风格偏向：' + styleText + '。' : ''}
+- 每次生成 ${count} 组关键词。${tokenInstruction}
+
+输出格式要求：
+- 每组包含【中文提示词】和【英文提示词】，英文为中文的对应翻译。
+- 英文提示词为MJ可识别的标准格式（逗号分隔），包含 --ar ${arVal} 参数。
+- 使用JSON数组格式输出，每个元素包含 "zh" 和 "en" 两个字段。
+- 示例输出格式：
+[{"zh":"中文关键词描述 --ar ${arVal}","en":"English prompt description --ar ${arVal}"}]
+- 严格只输出JSON数组，不要输出其他任何内容。`;
+
+  const activePresets = state.presets.filter(p => p.enabled);
+  activePresets.forEach(preset => {
+    const activeEntries = (preset.entries || []).filter(e => e.enabled !== false);
+    activeEntries.forEach(entry => {
+      systemContent += `\n\n[预设 - ${entry.role || 'system'}]: ${entry.content}`;
+    });
+  });
+
+  return systemContent;
+}
+
+function getArValue() {
+  if (state.params.ar === 'custom') {
+    return state.params.arCustom || '9:16';
+  }
+  return state.params.ar;
+}
+
+function getTokenValue() {
+  if (state.params.tokenLimit === 'none') return null;
+  if (state.params.tokenLimit === 'custom') {
+    return state.params.tokenCustom ? parseInt(state.params.tokenCustom) : null;
+  }
+  return parseInt(state.params.tokenLimit);
+}
+
+// ===== PERSISTENCE =====
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const s = JSON.parse(saved);
+      state = {...state, ...s};
+      if (!state.savedModels) state.savedModels = [];
+      if (!state.params.ar) state.params.ar = '9:16';
+      if (!state.params.arCustom) state.params.arCustom = '';
+      if (!state.params.tokenLimit) state.params.tokenLimit = 'none';
+      if (!state.params.tokenCustom) state.params.tokenCustom = '';
+      if (state.paramsCollapsed === undefined) state.paramsCollapsed = false;
+    }
+  } catch(e) {}
+}
+
+// ===== PARAMS =====
+function setParam(el) {
+  const param = el.dataset.param;
+  const val = el.dataset.val;
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  if (param === 'model') state.params.model = val;
+  else if (param === 'gender') state.params.gender = val;
+  else if (param === 'style') state.params.style = val;
+  saveParams();
+}
+function saveParams() {
+  state.params.stylize = parseInt(document.getElementById('stylizeVal').value) || 350;
+  state.params.raw = document.getElementById('rawToggle').checked;
+  state.params.groupCount = parseInt(document.getElementById('groupCount').value) || 3;
+
+  const arSel = document.getElementById('arSelect').value;
+  state.params.ar = arSel;
+  if (arSel === 'custom') {
+    state.params.arCustom = document.getElementById('arCustomInput').value.trim();
+  }
+
+  const tokenSel = document.getElementById('tokenSelect').value;
+  state.params.tokenLimit = tokenSel;
+  if (tokenSel === 'custom') {
+    state.params.tokenCustom = document.getElementById('tokenCustomInput').value.trim();
+  }
+
+  saveState();
+}
+
+function handleArChange() {
+  const val = document.getElementById('arSelect').value;
+  document.getElementById('arCustomInput').style.display = val === 'custom' ? 'inline-block' : 'none';
+  saveParams();
+}
+
+function handleTokenChange() {
+  const val = document.getElementById('tokenSelect').value;
+  document.getElementById('tokenCustomInput').style.display = val === 'custom' ? 'inline-block' : 'none';
+  saveParams();
+}
+
+function restoreParams() {
+  document.getElementById('stylizeVal').value = state.params.stylize;
+  document.getElementById('rawToggle').checked = state.params.raw;
+  document.getElementById('groupCount').value = state.params.groupCount;
+  document.querySelectorAll('[data-param="model"]').forEach(p => {
+    p.classList.toggle('active', p.dataset.val === state.params.model);
+  });
+  document.querySelectorAll('[data-param="gender"]').forEach(p => {
+    p.classList.toggle('active', p.dataset.val === state.params.gender);
+  });
+  document.querySelectorAll('[data-param="style"]').forEach(p => {
+    p.classList.toggle('active', p.dataset.val === state.params.style);
+  });
+
+  const arSel = document.getElementById('arSelect');
+  arSel.value = state.params.ar;
+  if (state.params.ar === 'custom') {
+    document.getElementById('arCustomInput').style.display = 'inline-block';
+    document.getElementById('arCustomInput').value = state.params.arCustom || '';
+  }
+
+  const tokenSel = document.getElementById('tokenSelect');
+  tokenSel.value = state.params.tokenLimit;
+  if (state.params.tokenLimit === 'custom') {
+    document.getElementById('tokenCustomInput').style.display = 'inline-block';
+    document.getElementById('tokenCustomInput').value = state.params.tokenCustom || '';
+  }
+
+  // Restore collapse state
+  if (state.paramsCollapsed) {
+    document.getElementById('paramsBar').classList.add('collapsed');
+    document.getElementById('collapseBtn').classList.add('collapsed');
+  }
+}
+
+// ===== TAGS =====
+function renderTags() {
+  const area = document.getElementById('tagsArea');
+  area.innerHTML = '';
+  state.tags.forEach((tag, i) => {
+    const el = document.createElement('button');
+    el.className = 'tag' + (tag.selected ? ' selected' : '');
+    el.innerHTML = `<span>${tag.text}</span><span class="remove-tag" onclick="event.stopPropagation();removeTag(${i})">✕</span>`;
+    el.onclick = () => toggleTag(i);
+    area.appendChild(el);
+  });const addBtn = document.createElement('button');
+  addBtn.className = 'add-tag-btn';
+  addBtn.textContent = '+';
+  addBtn.title = '添加快捷标签';
+  addBtn.onclick = addTagPrompt;
+  area.appendChild(addBtn);
+}
+function addTagPrompt() {
+  const text = prompt('输入标签关键词：');
+  if (text && text.trim()) {
+    state.tags.push({text: text.trim(), selected: false});
+    saveState();
+    renderTags();
+  }
+}
+function removeTag(i) {
+  state.tags.splice(i, 1);
+  saveState();
+  renderTags();
+  updateInputFromTags();
+}
+function toggleTag(i) {
+  state.tags[i].selected = !state.tags[i].selected;
+  saveState();
+  renderTags();
+  updateInputFromTags();
+}
+function updateInputFromTags() {
+  const input = document.getElementById('promptInput');
+  const currentText = input.value;
+  const selectedTexts = state.tags.filter(t => t.selected).map(t => t.text);
+  let base = currentText;
+  state.tags.forEach(t => {
+    base = base.replace(new RegExp('\\s*' + escapeRegex(t.text) + '\\s*', 'g'), ' ');
+  });
+  base = base.trim();
+  if (selectedTexts.length) {
+    input.value = (base ? base + ' ' : '') + selectedTexts.join(' ');
+  } else {
+    input.value = base;
+  }
+}
+function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+// ===== SETTINGS TABS =====
+function switchSettingsTab(tab, el) {
+  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  if (tab === 'api') {
+    document.getElementById('panelApi').classList.add('active');} else {
+    document.getElementById('panelPreset').classList.add('active');
+  }
+}
+
+// ===== API =====
+function saveApiKey() {
+  const name = document.getElementById('apiName').value.trim() || 'Unnamed';
+  const url = document.getElementById('apiUrl').value.trim();
+  const key = document.getElementById('apiKey').value.trim();
+  if (!url || !key) { alert('请填写URL和API Key'); return; }
+
+  const editIdx = parseInt(document.getElementById('apiName').dataset.editIndex);
+  if (!isNaN(editIdx) && editIdx >= 0 && editIdx < state.apiKeys.length) {
+    state.apiKeys[editIdx] = {name, url, key};
+    delete document.getElementById('apiName').dataset.editIndex;
+  } else {
+    state.apiKeys.push({name, url, key});
+  }
+
+  if (state.activeApiIndex < 0) state.activeApiIndex = 0;
+  saveState();
+  renderApiKeys();
+  document.getElementById('apiName').value = '';
+  document.getElementById('apiUrl').value = '';
+  document.getElementById('apiKey').value = '';
+}
+function renderApiKeys() {
+  const list = document.getElementById('apiKeysList');
+  list.innerHTML = '';
+  state.apiKeys.forEach((k, i) => {
+    const el = document.createElement('div');
+    el.className = 'api-key-item';
+    el.innerHTML = `
+      <span class="key-name">${k.name}</span>
+      <span class="key-url">${k.url}</span>
+      <div class="key-actions">
+        <button class="small-btn" onclick="event.stopPropagation();fillApiKey(${i})" title="填充到编辑区">编辑</button>
+        <button class="small-btn ${state.activeApiIndex===i?'active-key':''}" onclick="event.stopPropagation();activateKey(${i})">${state.activeApiIndex===i?'✓ 使用中':'使用'}</button>
+        <button class="small-btn danger" onclick="event.stopPropagation();deleteKey(${i})">删除</button>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+function fillApiKey(i) {
+  const k = state.apiKeys[i];
+  document.getElementById('apiName').value = k.name;
+  document.getElementById('apiUrl').value = k.url;
+  document.getElementById('apiKey').value = k.key;
+  document.getElementById('apiName').dataset.editIndex = i;
+}
+function activateKey(i) {
+  state.activeApiIndex = i;
+  saveState();
+  renderApiKeys();
+  updateConnectionStatus();
+}
+function deleteKey(i) {
+  state.apiKeys.splice(i, 1);
+  if (state.activeApiIndex >= state.apiKeys.length) state.activeApiIndex = state.apiKeys.length - 1;
+  saveState();
+  renderApiKeys();
+  updateConnectionStatus();
+}
+async function connectApi() {
+  if (state.activeApiIndex < 0 || !state.apiKeys[state.activeApiIndex]) {
+    alert('请先保存并选择一个API密钥');
+    return;
+  }
+  const api = state.apiKeys[state.activeApiIndex];
+  try {
+    const resp = await fetch(api.url.replace(/\/+$/, '') + '/models', {
+      headers: {'Authorization': 'Bearer ' + api.key}
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    const models = (data.data || []).map(m => m.id).sort();
+    state.models = models;
+    state.connected = true;
+    if (models.length && !state.selectedModel) state.selectedModel = models[0];
+    saveState();
+    updateConnectionStatus();
+    renderModelSelect();
+  } catch(e) {
+    alert('连接失败: ' + e.message);
+    state.connected = false;
+    updateConnectionStatus();
+  }
+}
+function renderModelSelect() {
+  const group = document.getElementById('modelSelectGroup');
+  const select = document.getElementById('modelSelect');
+  if (state.models.length) {
+    group.style.display = 'block';
+    select.innerHTML = state.models.map(m => `<option value="${m}" ${m===state.selectedModel?'selected':''}>${m}</option>`).join('');
+  } else {
+    group.style.display = 'none';
+  }
+  renderSavedModels();
+}
+function saveSelectedModel() {
+  state.selectedModel = document.getElementById('modelSelect').value;
+  saveState();
+  updateConnectionStatus();
+}
+function saveModelToList() {
+  const model = document.getElementById('modelSelect').value;
+  if (!model) return;
+  if (!state.savedModels.includes(model)) {
+    state.savedModels.push(model);
+    saveState();
+  }
+  state.selectedModel = model;
+  saveState();
+  renderSavedModels();
+  updateConnectionStatus();
+}
+function renderSavedModels() {
+  const container = document.getElementById('savedModelsList');
+  container.innerHTML = '';
+  if (!state.savedModels || !state.savedModels.length) {
+    container.innerHTML = '<span style="font-size:11px;color:var(--text3);">暂无保存的模型</span>';
+    return;
+  }
+  state.savedModels.forEach((m, i) => {
+    const el = document.createElement('span');
+    el.className = 'saved-model-item' + (m === state.selectedModel ? ' active-model' : '');
+    el.innerHTML = `${m}<span class="remove-model" onclick="event.stopPropagation();removeSavedModel(${i})">✕</span>`;
+    el.onclick = () => {
+      state.selectedModel = m;
+      saveState();
+      renderSavedModels();
+      updateConnectionStatus();
+      const sel = document.getElementById('modelSelect');
+      if (sel) {
+        for (let opt of sel.options) {
+          if (opt.value === m) { sel.value = m; break; }
+        }
+      }
+    };
+    container.appendChild(el);
+  });
+}
+function removeSavedModel(i) {
+  const removed = state.savedModels.splice(i, 1)[0];
+  if (state.selectedModel === removed && state.savedModels.length) {
+    state.selectedModel = state.savedModels[0];
+  }
+  saveState();
+  renderSavedModels();
+  updateConnectionStatus();
+}
+function updateConnectionStatus() {
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  const modelDisp = document.getElementById('modelDisplay');
+  if (state.connected && state.apiKeys[state.activeApiIndex]) {
+    dot.classList.add('connected');
+    text.textContent = '已连接 · ' + state.apiKeys[state.activeApiIndex].name;
+    modelDisp.textContent = state.selectedModel || '';
+  } else {
+    dot.classList.remove('connected');
+    text.textContent = '未连接';
+    modelDisp.textContent = '';
+  }
+}
+
+// ===== PRESETS =====
+function importPreset(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const preset = {
+        name: file.name.replace(/\.json$/i, ''),
+        enabled: true,
+        entries: [],
+        expanded: false
+      };
+      if (Array.isArray(data)) {
+        preset.entries = data.map((item, idx) => ({
+          id: idx, role: item.role || 'system',
+          content: item.content || item.text || JSON.stringify(item), enabled: true
+        }));
+      } else if (data.messages && Array.isArray(data.messages)) {
+        preset.entries = data.messages.map((item, idx) => ({
+          id: idx, role: item.role || 'system', content: item.content || '', enabled: true
+        }));
+      } else if (data.prompts && Array.isArray(data.prompts)) {
+        preset.entries = data.prompts.map((item, idx) => ({
+          id: idx, role: item.role || item.name || 'system',
+          content: item.content || item.prompt || '', enabled: item.enabled !== false
+        }));
+      } else if (data.prompt_order || data.prompts) {
+        const prompts = data.prompts || [];
+        preset.entries = prompts.map((item, idx) => ({
+          id: idx, role: item.role || item.name || 'system',
+          content: item.content || item.prompt || '', enabled: item.enabled !== false
+        }));
+      } else {
+        Object.entries(data).forEach(([key, val], idx) => {
+          if (typeof val === 'string') {
+            preset.entries.push({id: idx, role: key, content: val, enabled: true});
+          } else if (typeof val === 'object') {
+            preset.entries.push({id: idx, role: key, content: JSON.stringify(val, null, 2), enabled: true});
+          }
+        });
+      }
+      state.presets.push(preset);
+      saveState();
+      renderPresets();
+    } catch(err) {
+      alert('解析JSON失败: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+function renderPresets() {
+  const list = document.getElementById('presetsList');
+  list.innerHTML = '';
+  state.presets.forEach((preset, pi) => {
+    const el = document.createElement('div');
+    el.className = 'preset-item';
+    el.innerHTML = `
+      <div class="preset-header" onclick="togglePresetExpand(${pi})">
+        <span class="preset-name">${preset.name}</span>
+        <div class="preset-actions" onclick="event.stopPropagation()">
+          <label class="toggle-switch" style="transform:scale(.75);">
+            <input type="checkbox" ${preset.enabled?'checked':''} onchange="togglePreset(${pi},this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+          <button class="small-btn danger" onclick="deletePreset(${pi})">删除</button>
+        </div>
+      </div>
+      <div class="preset-entries ${preset.expanded?'show':''}" id="presetEntries${pi}">
+        ${(preset.entries||[]).map((entry, ei) => `
+          <div class="entry-item" style="${entry.enabled===false?'opacity:.4':''}">
+            <span class="entry-role">${entry.role}</span>
+            <div class="entry-content">${escapeHtml(entry.content).substring(0, 200)}</div>
+            <div class="entry-actions">
+              <label class="toggle-switch" style="transform:scale(.6);">
+                <input type="checkbox" ${entry.enabled!==false?'checked':''} onchange="toggleEntry(${pi},${ei},this.checked)">
+                <span class="toggle-slider"></span>
+              </label>
+              <button class="small-btn" onclick="editEntry(${pi},${ei})">编辑</button>
+              <button class="small-btn danger" onclick="deleteEntry(${pi},${ei})">删除</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    list.appendChild(el);
+  });
+}
+function togglePresetExpand(pi) {
+  state.presets[pi].expanded = !state.presets[pi].expanded;
+  const el = document.getElementById('presetEntries' + pi);
+  if (el) el.classList.toggle('show');
+}
+function togglePreset(pi, val) { state.presets[pi].enabled = val; saveState(); }
+function deletePreset(pi) { state.presets.splice(pi, 1); saveState(); renderPresets(); }
+function toggleEntry(pi, ei, val) { state.presets[pi].entries[ei].enabled = val; saveState(); renderPresets(); }
+function deleteEntry(pi, ei) { state.presets[pi].entries.splice(ei, 1); saveState(); renderPresets(); }
+
+let editingPresetIndex = -1, editingEntryIndex = -1;
+function editEntry(pi, ei) {
+  editingPresetIndex = pi; editingEntryIndex = ei;
+  const entry = state.presets[pi].entries[ei];
+  document.getElementById('editEntryRole').value = entry.role;
+  document.getElementById('editEntryContent').value = entry.content;
+  document.getElementById('editEntryModal').classList.add('show');
+}
+function closeEditEntry() { document.getElementById('editEntryModal').classList.remove('show'); }
+function saveEditedEntry() {
+  if (editingPresetIndex >= 0 && editingEntryIndex >= 0) {
+    state.presets[editingPresetIndex].entries[editingEntryIndex].role = document.getElementById('editEntryRole').value;
+    state.presets[editingPresetIndex].entries[editingEntryIndex].content = document.getElementById('editEntryContent').value;
+    saveState(); renderPresets();
+  }
+  closeEditEntry();
+}
+
+// ===== GENERATE =====
+let pendingAction = null;
+function handleGenerate() {
+  const input = document.getElementById('promptInput').value.trim();
+  if (!input) { alert('请输入画面描述'); return; }
+  if (state.currentResults.length > 0) {
+    pendingAction = 'generate';
+    showConfirmDialog();
+  } else {
+    doGenerate(input);
+  }
+}
+function handleRefresh() {
+  if (!state.lastPrompt) { alert('没有上一次的指令可以刷新'); return; }
+  if (state.currentResults.length > 0) {
+    pendingAction = 'refresh';
+    showConfirmDialog();
+  } else {
+    doGenerate(state.lastPrompt);
+  }
+}
+function showConfirmDialog() { document.getElementById('confirmDialog').classList.add('show'); }
+function cancelConfirm() { document.getElementById('confirmDialog').classList.remove('show'); pendingAction = null; }
+function confirmSave(save) {
+  document.getElementById('confirmDialog').classList.remove('show');
+  if (save && state.currentResults.length) {
+    const record = {
+      id: Date.now(), name: state.lastPrompt || '未命名',
+      time: new Date().toLocaleString(), prompt: state.lastPrompt,
+      results: [...state.currentResults], params: {...state.params}
+    };
+    state.history.unshift(record);
+    saveState();
+  }
+  const prompt = pendingAction === 'refresh' ? state.lastPrompt : document.getElementById('promptInput').value.trim();
+  pendingAction = null;
+  doGenerate(prompt);
+}
+
+async function doGenerate(promptText) {
+  if (!state.connected || state.activeApiIndex < 0) {
+    alert('请先在设置中配置并连接API'); return;
+  }
+  state.lastPrompt = promptText;
+  state.currentResults = [];
+  saveState();
+
+  document.getElementById('userPromptDisplay').style.display = 'block';
+  document.getElementById('userPromptText').textContent = promptText;
+  document.getElementById('resultsGrid').innerHTML = '';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('loadingIndicator').classList.add('show');
+
+  const api = state.apiKeys[state.activeApiIndex];
+  const systemPrompt = buildSystemPrompt();
+
+  try {
+    const resp = await fetch(api.url.replace(/\/+$/, '') + '/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + api.key },
+      body: JSON.stringify({
+        model: state.selectedModel,
+        messages: [
+          {role: 'system', content: systemPrompt},
+          {role: 'user', content: promptText}
+        ],
+        temperature: 0.9,
+        max_tokens: 4096
+      })
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content || '';
+    parseAndDisplayResults(content);
+  } catch(e) {
+    document.getElementById('loadingIndicator').classList.remove('show');
+    alert('生成失败: ' + e.message);
+    document.getElementById('emptyState').style.display = 'block';
+  }
+}
+
+function parseAndDisplayResults(content) {
+  document.getElementById('loadingIndicator').classList.remove('show');
+  let results = [];
+  try {
+    let jsonStr = content;
+    const jsonMatch = content.match(/\[[\s\S]*\]/);
+    if (jsonMatch) jsonStr = jsonMatch[0];
+    results = JSON.parse(jsonStr);if (!Array.isArray(results)) results = [results];
+  } catch(e) {
+    const blocks = content.split(/```/g).filter(b => b.trim());
+    if (blocks.length >= 2) {
+      for (let i = 0; i < blocks.length; i += 2) {
+        results.push({ zh: blocks[i]?.trim() || '', en: blocks[i+1]?.trim() || blocks[i]?.trim() || '' });
+      }
+    } else {
+      results.push({zh: content, en: content});
+    }
+  }
+  state.currentResults = results;
+  saveState();
+  renderResults(results);
+}
+
+function renderResults(results) {
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = '';
+  if (!results.length) { document.getElementById('emptyState').style.display = 'block'; return; }
+  document.getElementById('emptyState').style.display = 'none';
+  results.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.dataset.showLang = 'zh';
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="card-header">
+        <span class="card-index">Group ${i + 1}</span>
+        <button class="swap-btn" onclick="event.stopPropagation();swapLang(this)" title="切换中/英文">⇄</button>
+      </div>
+      <div class="result-text">${escapeHtml(r.zh || '')}</div>`;
+    card.onclick = () => copyResult(card, r);
+    grid.appendChild(card);
+  });
+}
+
+function swapLang(btn) {
+  const card = btn.closest('.result-card');
+  const i = parseInt(card.dataset.index);
+  const r = state.currentResults[i];
+  const current = card.dataset.showLang;
+  const next = current === 'zh' ? 'en' : 'zh';
+  card.dataset.showLang = next;
+  card.querySelector('.result-text').textContent = r[next] || '';
+}
+
+function copyResult(card, r) {
+  const lang = card.dataset.showLang;
+  let text = r[lang] || '';
+  // Build suffix: model, stylize, raw (AR is already in the prompt from AI)
+  const suffixes = [];
+  suffixes.push(state.params.model);
+  suffixes.push('--stylize ' + state.params.stylize);
+  if (state.params.raw) suffixes.push('--raw');
+  text = text.trim() + ' ' + suffixes.join(' ');
+  navigator.clipboard.writeText(text).then(() => {
+    showCopyToast();
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showCopyToast();
+  });
+}
+
+function showCopyToast() {
+  const toast = document.getElementById('copyToast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1500);
+}
+
+// ===== HISTORY =====
+function openHistory() { renderHistory(); document.getElementById('historyModal').classList.add('show'); }
+function closeHistory() { document.getElementById('historyModal').classList.remove('show'); }
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const empty = document.getElementById('historyEmpty');
+  list.innerHTML = '';
+  if (!state.history.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  state.history.forEach((h, hi) => {
+    const el = document.createElement('div');
+    el.className = 'history-item';
+    el.innerHTML = `
+      <div class="history-item-header">
+        <span class="history-item-name">${escapeHtml(h.name)}</span>
+        <div style="display:flex;gap:4px;align-items:center;">
+          <span class="history-item-time">${h.time}</span>
+          <button class="small-btn" onclick="event.stopPropagation();renameHistory(${hi})">重命名</button>
+          <button class="small-btn danger" onclick="event.stopPropagation();deleteHistory(${hi})">删除</button>
+        </div>
+      </div>
+      <div class="history-item-preview">${escapeHtml(h.prompt)}</div>
+      <div class="history-detail" id="histDetail${hi}">
+        <div class="history-results-grid">
+          ${(h.results||[]).map((r, ri) => `
+            <div class="history-result-card" onclick="event.stopPropagation();copyHistoryResult(${hi},${ri},'zh')">
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                <span style="color:var(--accent2);font-size:10px;">Group ${ri+1}</span>
+                <button class="swap-btn" style="width:18px;height:18px;font-size:9px;" onclick="event.stopPropagation();swapHistoryLang(this,${hi},${ri})" title="切换">⇄</button>
+              </div>
+              <div class="hist-result-text" data-lang="zh">${escapeHtml(r.zh || '')}</div></div>
+          `).join('')}
+        </div>
+      </div>`;
+    el.onclick = () => { document.getElementById('histDetail' + hi).classList.toggle('show'); };
+    list.appendChild(el);
+  });
+}
+function renameHistory(hi) {
+  const newName = prompt('输入新名称：', state.history[hi].name);
+  if (newName !== null && newName.trim()) { state.history[hi].name = newName.trim(); saveState(); renderHistory(); }
+}
+function deleteHistory(hi) { state.history.splice(hi, 1); saveState(); renderHistory(); }
+function copyHistoryResult(hi, ri, lang) {
+  const r = state.history[hi].results[ri];
+  const text = r[lang] || '';
+  navigator.clipboard.writeText(text).then(showCopyToast).catch(showCopyToast);
+}
+function swapHistoryLang(btn, hi, ri) {
+  const card = btn.closest('.history-result-card');
+  const textEl = card.querySelector('.hist-result-text');
+  const current = textEl.dataset.lang;
+  const next = current === 'zh' ? 'en' : 'zh';
+  textEl.dataset.lang = next;
+  const r = state.history[hi].results[ri];
+  textEl.textContent = r[next] || '';
+  card.onclick = (e) => { if (e.target === btn) return; e.stopPropagation(); copyHistoryResult(hi, ri, next); };
+}
+
+// ===== SETTINGS =====
+function openSettings() {
+  renderApiKeys(); renderModelSelect(); renderPresets(); renderSavedModels();
+  document.getElementById('settingsModal').classList.add('show');
+}
+function closeSettings() { document.getElementById('settingsModal').classList.remove('show'); }
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function init() {
+  loadState();
+  restoreParams();
+  renderTags();
+  updateConnectionStatus();
+  if (state.currentResults.length) {
+    renderResults(state.currentResults);if (state.lastPrompt) {
+      document.getElementById('userPromptDisplay').style.display = 'block';
+      document.getElementById('userPromptText').textContent = state.lastPrompt;
+    }
+  }
+  if (state.lastPrompt) {
+    document.getElementById('promptInput').value = state.lastPrompt;
+  }updateScrollPadding();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+window.addEventListener('resize', updateScrollPadding);
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+</script>
+</body>
+</html>
