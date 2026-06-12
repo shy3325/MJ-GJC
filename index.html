@@ -19,11 +19,10 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--accent);}
 
-/* Fixed top area */
 .fixed-top{position:fixed;top:0;left:0;right:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.4);}
 .fixed-top-inner{max-width:1100px;margin:0 auto;padding:8px 16px;}
 
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:4px 06px;}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:4px 6px;}
 .app-title{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .header-actions{display:flex;gap:6px;align-items:center;}
 .icon-btn{width:32px;height:32px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;}
@@ -36,7 +35,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .status-dot{width:5px;height:5px;border-radius:50%;background:var(--danger);}
 .status-dot.connected{background:var(--success);}
 
-/* Compact Params Bar */
 .params-bar{display:flex;flex-wrap:wrap;gap:5px 10px;padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);align-items:center;font-size:12px;margin-top:4px;overflow:hidden;transition:max-height .3s ease,padding .3s ease,margin .3s ease,opacity .3s ease;}
 .params-bar.collapsed{max-height:0;padding:0 10px;margin-top:0;border-color:transparent;opacity:0;}
 .param-group{display:flex;align-items:center;gap:4px;}
@@ -56,22 +54,48 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .count-select,.token-select,.ar-select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;}
 .count-select:focus,.token-select:focus,.ar-select:focus{outline:none;border-color:var(--accent);}
 .param-divider{width:1px;height:18px;background:var(--border);margin:0 2px;}
-.ar-custom-input{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;display:none;}
-.ar-custom-input:focus{outline:none;border-color:var(--accent);}
-.token-custom-input{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;display:none;}
-.token-custom-input:focus{outline:none;border-color:var(--accent);}
+.ar-custom-input,.token-custom-input{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:2px 6px;font-size:11px;text-align:center;display:none;}
+.ar-custom-input:focus,.token-custom-input:focus{outline:none;border-color:var(--accent);}
 
-/* Scrollable content area */
+/* Checkbox lang pills */
+.lang-check-group{display:flex;gap:3px;align-items:center;}
+.lang-check-label{padding:2px 8px;border:1px solid var(--border);border-radius:16px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;white-space:nowrap;line-height:1.6;user-select:none;}
+.lang-check-label.checked{background:var(--accent);border-color:var(--accent);color:#fff;}
+.lang-check-label:hover:not(.checked){border-color:var(--accent2);color:var(--accent2);}
+
+/* P-values & Suffixes in params */
+.pval-suffix-area{display:flex;gap:3px;flex-wrap:wrap;align-items:center;}
+.pval-item,.suffix-item{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border:1px solid var(--border);border-radius:16px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;white-space:nowrap;line-height:1.6;user-select:none;}
+.pval-item.active,.suffix-item.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.pval-item:hover:not(.active),.suffix-item:hover:not(.active){border-color:var(--accent2);color:var(--accent2);}
+.pval-item .pval-edit,.suffix-item .suffix-edit{font-size:9px;opacity:.6;cursor:pointer;margin-left:2px;}
+.pval-item .pval-edit:hover,.suffix-item .suffix-edit:hover{opacity:1;color:var(--accent3);}
+.add-pval-btn,.add-suffix-btn{width:20px;height:20px;border:1px dashed var(--border);border-radius:50%;background:transparent;color:var(--text3);cursor:pointer;font-size:11px;display:inline-flex;align-items:center;justify-content:center;transition:.2s;}
+.add-pval-btn:hover,.add-suffix-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Imitate items */
+.imitate-area{display:flex;gap:3px;flex-wrap:wrap;align-items:center;}
+.imitate-item{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border:1px solid var(--border);border-radius:16px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;white-space:nowrap;line-height:1.6;user-select:none;}
+.imitate-item.active{background:var(--accent3);border-color:var(--accent3);color:#fff;}
+.imitate-item:hover:not(.active){border-color:var(--accent3);color:var(--accent3);}
+.imitate-item .imi-edit{font-size:9px;opacity:.6;cursor:pointer;margin-left:2px;}
+.imitate-item .imi-edit:hover{opacity:1;color:var(--accent);}
+.add-imitate-btn{width:20px;height:20px;border:1px dashed var(--border);border-radius:50%;background:transparent;color:var(--text3);cursor:pointer;font-size:11px;display:inline-flex;align-items:center;justify-content:center;transition:.2s;}
+.add-imitate-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+
 .scroll-content{max-width:1100px;margin:0 auto;padding:12px 16px;}
 
-/* Input Section */
 .input-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;margin-bottom:10px;}
+.tags-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.tags-header .edit-tags-btn{font-size:10px;padding:2px 8px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text3);cursor:pointer;transition:.2s;}
+.tags-header .edit-tags-btn:hover,.tags-header .edit-tags-btn.active{border-color:var(--accent3);color:var(--accent3);}
 .tags-area{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;align-items:center;}
 .tag{padding:2px 9px;border:1px solid var(--border);border-radius:14px;font-size:11px;cursor:pointer;background:transparent;color:var(--text2);transition:.2s;display:flex;align-items:center;gap:4px;}
 .tag.selected{background:var(--accent);border-color:var(--accent);color:#fff;}
 .tag:hover:not(.selected){border-color:var(--accent2);}
-.tag .remove-tag{font-size:9px;opacity:.6;cursor:pointer;}
+.tag .remove-tag{font-size:9px;opacity:.6;cursor:pointer;display:none;}
 .tag .remove-tag:hover{opacity:1;}
+.tags-area.edit-mode .tag .remove-tag{display:inline;}
 .add-tag-btn{width:24px;height:24px;border:1px dashed var(--border);border-radius:50%;background:transparent;color:var(--text3);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.2s;}
 .add-tag-btn:hover{border-color:var(--accent);color:var(--accent);}
 .input-row{display:flex;gap:8px;}
@@ -84,8 +108,17 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .btn-primary:hover{opacity:.85;transform:translateY(-1px);}
 .btn-secondary{background:var(--surface3);color:var(--text2);border:1px solid var(--border);}
 .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.btn-accent3{background:linear-gradient(135deg,var(--accent3),#e84393);color:#fff;}
+.btn-accent3:hover{opacity:.85;transform:translateY(-1px);}
 
-/* Results */
+/* Image preview area */
+.image-preview-area{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.image-preview-item{position:relative;width:64px;height:64px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);}
+.image-preview-item img{width:100%;height:100%;object-fit:cover;}
+.image-preview-item .remove-img{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.add-img-btn{width:64px;height:64px;border:1px dashed var(--border);border-radius:var(--radius);background:transparent;color:var(--text3);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.add-img-btn:hover{border-color:var(--accent);color:var(--accent);}
+
 .results-section{min-height:180px;}
 .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;}
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;position:relative;cursor:pointer;transition:.2s;min-height:90px;}
@@ -94,6 +127,7 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .result-card .card-index{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
 .swap-btn{width:22px;height:22px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text3);cursor:pointer;font-size:11px;transition:.2s;display:flex;align-items:center;justify-content:center;}
 .swap-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.swap-btn.disabled{opacity:.3;cursor:default;pointer-events:none;}
 .result-text{font-size:12px;line-height:1.6;color:var(--text);word-break:break-word;}
 .copy-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;padding:8px 24px;border-radius:20px;font-size:13px;z-index:999;pointer-events:none;opacity:0;transition:opacity .3s;}
 .copy-toast.show{opacity:1;}
@@ -101,7 +135,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .user-prompt-display{margin-top:10px;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text2);display:none;}
 .user-prompt-display .label{font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
 
-/* Modal Common */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-overlay.show{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);width:90%;max-width:680px;max-height:85vh;overflow-y:auto;padding:20px;}
@@ -110,7 +143,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .modal-close{width:28px;height:28px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;}
 .modal-close:hover{background:var(--surface3);color:var(--text);}
 
-/* Settings Tabs */
 .settings-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);}
 .settings-tab{padding:8px 20px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s;}
 .settings-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
@@ -145,7 +177,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .saved-model-item .remove-model{font-size:9px;opacity:.6;cursor:pointer;margin-left:2px;}
 .saved-model-item .remove-model:hover{opacity:1;color:var(--danger);}
 
-/* Preset */
 .preset-item{padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;cursor:pointer;transition:.2s;}
 .preset-item:hover{border-color:var(--accent2);}
 .preset-header{display:flex;justify-content:space-between;align-items:center;}
@@ -158,7 +189,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .entry-content{flex:1;color:var(--text2);line-height:1.4;max-height:55px;overflow-y:auto;word-break:break-word;}
 .entry-actions{display:flex;gap:3px;flex-shrink:0;}
 
-/* History */
 .history-item{padding:9px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:5px;cursor:pointer;transition:.2s;}
 .history-item:hover{border-color:var(--accent2);}
 .history-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
@@ -171,14 +201,12 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 .history-result-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px;cursor:pointer;font-size:11px;line-height:1.5;transition:.2s;}
 .history-result-card:hover{border-color:var(--accent);}
 
-/* Confirm */
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;}
 .confirm-overlay.show{display:flex;}
 .confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;max-width:340px;width:90%;text-align:center;}
 .confirm-box p{font-size:13px;color:var(--text);margin-bottom:14px;line-height:1.5;}
 .confirm-actions{display:flex;gap:8px;justify-content:center;}
 
-/* Loading */
 .loading-indicator{display:none;text-align:center;padding:36px;color:var(--text3);}
 .loading-indicator.show{display:block;}
 .loading-dots{display:inline-flex;gap:4px;}
@@ -202,7 +230,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
 </head>
 <body>
 
-<!-- Fixed Top Section -->
 <div class="fixed-top" id="fixedTop">
   <div class="fixed-top-inner">
     <div class="app-header">
@@ -215,14 +242,11 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
         <button class="icon-btn" onclick="openSettings()" title="设置">⚙</button>
       </div>
     </div>
-
     <div class="status-bar">
       <div class="status-dot" id="statusDot"></div>
       <span id="statusText">未连接</span>
       <span style="margin-left:auto;" id="modelDisplay"></span>
     </div>
-
-    <!-- Compact Params Bar -->
     <div class="params-bar" id="paramsBar">
       <div class="param-group">
         <span class="param-label">Model</span>
@@ -243,20 +267,15 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
           <option value="9:16" selected>9:16</option>
           <option value="16:9">16:9</option>
           <option value="1:1">1:1</option><option value="4:3">4:3</option>
-          <option value="3:4">3:4</option>
-          <option value="2:3">2:3</option>
-          <option value="3:2">3:2</option>
-          <option value="custom">自定义</option>
+          <option value="3:4">3:4</option><option value="2:3">2:3</option>
+          <option value="3:2">3:2</option><option value="custom">自定义</option>
         </select>
         <input type="text" class="ar-custom-input" id="arCustomInput" placeholder="W:H" onchange="saveParams()">
       </div>
       <div class="param-divider"></div>
       <div class="param-group">
         <span class="param-label">Raw</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="rawToggle" onchange="saveParams()">
-          <span class="toggle-slider"></span>
-        </label>
+        <label class="toggle-switch"><input type="checkbox" id="rawToggle" onchange="saveParams()"><span class="toggle-slider"></span></label>
       </div>
       <div class="param-divider"></div>
       <div class="param-group">
@@ -286,24 +305,43 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
       <div class="param-group">
         <span class="param-label">Token</span>
         <select class="token-select" id="tokenSelect" onchange="handleTokenChange()">
-          <option value="none" selected>无</option>
-          <option value="100">100+</option>
-          <option value="150">150+</option>
-          <option value="200">200+</option>
-          <option value="250">250+</option>
-          <option value="300">300+</option>
-          <option value="custom">自定义</option>
+          <option value="none" selected>无</option><option value="100">100+</option><option value="150">150+</option><option value="200">200+</option><option value="250">250+</option><option value="300">300+</option><option value="custom">自定义</option>
         </select>
         <input type="number" class="token-custom-input" id="tokenCustomInput" placeholder="数值" min="50" max="2000" onchange="saveParams()">
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">语言</span>
+        <div class="lang-check-group" id="langCheckGroup"></div>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">尾缀</span>
+        <div class="pval-suffix-area" id="suffixArea"></div>
+        <button class="add-suffix-btn" onclick="addSuffixPrompt()" title="添加尾缀词">+</button>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">P值</span>
+        <div class="pval-suffix-area" id="pvalArea"></div>
+        <button class="add-pval-btn" onclick="addPvalPrompt()" title="添加P值">+</button>
+      </div>
+      <div class="param-divider"></div>
+      <div class="param-group">
+        <span class="param-label">模仿</span>
+        <div class="imitate-area" id="imitateArea"></div>
+        <button class="add-imitate-btn" onclick="addImitatePrompt()" title="添加模仿模板">+</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Scrollable Content -->
 <div class="scroll-content" id="scrollContent">
-  <!-- Input Section -->
   <div class="input-section">
+    <div class="tags-header">
+      <span style="font-size:11px;color:var(--text3);">快捷标签</span>
+      <button class="edit-tags-btn" id="editTagsBtn" onclick="toggleTagEditMode()">编辑</button>
+    </div>
     <div class="tags-area" id="tagsArea">
       <button class="add-tag-btn" onclick="addTagPrompt()" title="添加快捷标签">+</button>
     </div>
@@ -312,11 +350,13 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
       <div class="action-btns">
         <button class="btn btn-primary" onclick="handleGenerate()">生成</button>
         <button class="btn btn-secondary" onclick="handleRefresh()">刷新</button>
+        <button class="btn btn-accent3" onclick="handleImageGen()">识图</button>
       </div>
+    </div><div class="image-preview-area" id="imagePreviewArea" style="display:none;">
+      <input type="file" id="imageFileInput" accept="image/*" multiple style="display:none;" onchange="handleImageFiles(event)">
     </div>
   </div>
 
-  <!-- Results -->
   <div class="results-section">
     <div class="loading-indicator" id="loadingIndicator">
       <div class="loading-dots"><span></span><span></span><span></span></div>
@@ -344,13 +384,10 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
       <div class="modal-title">设置</div>
       <button class="modal-close" onclick="closeSettings()">✕</button>
     </div>
-
     <div class="settings-tabs">
       <div class="settings-tab active" onclick="switchSettingsTab('api',this)">API 配置</div>
       <div class="settings-tab" onclick="switchSettingsTab('preset',this)">预设管理</div>
     </div>
-
-    <!-- API Panel -->
     <div class="settings-panel active" id="panelApi">
       <div class="settings-section">
         <div class="settings-section-title">密钥管理</div>
@@ -379,8 +416,6 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
         </div>
       </div>
     </div>
-
-    <!-- Preset Panel -->
     <div class="settings-panel" id="panelPreset">
       <div class="settings-section">
         <div class="settings-section-title">预设管理</div>
@@ -401,9 +436,8 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
       <div class="modal-title">历史记录</div>
       <button class="modal-close" onclick="closeHistory()">✕</button>
     </div>
-    <div id="historyList"></div><div class="empty-state" id="historyEmpty" style="padding:20px;">
-      <p>暂无历史记录</p>
-    </div>
+    <div id="historyList"></div>
+    <div class="empty-state" id="historyEmpty" style="padding:20px;"><p>暂无历史记录</p></div>
   </div>
 </div>
 
@@ -432,807 +466,682 @@ body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;backgroun
   </div>
 </div>
 
+<!-- Edit PVal/Suffix/Imitate Modal -->
+<div class="modal-overlay" id="editPvalModal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title" id="editPvalTitle">编辑</div>
+      <button class="modal-close" onclick="closeEditPval()">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">名称</label><input class="form-input" id="editPvalName"></div>
+    <div class="form-group"><label class="form-label">内容</label><textarea class="form-input" id="editPvalContent" rows="5" style="resize:vertical;"></textarea></div>
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <button class="btn btn-primary" onclick="saveEditPval()" style="font-size:11px;">保存</button>
+      <button class="btn btn-secondary" onclick="deleteEditPval()" style="font-size:11px;border-color:var(--danger);color:var(--danger);">删除</button>
+    </div>
+  </div>
+</div>
+
 <script>
+const ALL_LANGS = [{key:'zh',label:'中'},{key:'ja',label:'日'},{key:'en',label:'英'},{key:'ko',label:'韩'}];
+
 let state = {
-  params: { model:'--niji 7', stylize:350, raw:false, gender:'male', style:'impasto', groupCount:3, ar:'9:16', arCustom:'', tokenLimit:'none', tokenCustom:'' },
-  paramsCollapsed: false,
-  tags: [],
-  apiKeys: [],
-  activeApiIndex: -1,
-  selectedModel: '',
-  savedModels: [],
-  models: [],
-  presets: [],
-  history: [],
-  lastPrompt: '',
-  currentResults: [],
-  connected: false
+  params:{model:'--niji 7',stylize:350,raw:false,gender:'male',style:'impasto',groupCount:3,ar:'9:16',arCustom:'',tokenLimit:'none',tokenCustom:''},
+  paramsCollapsed:false,
+  tags:[],
+  tagEditMode:false,
+  apiKeys:[],
+  activeApiIndex:-1,
+  selectedModel:'',
+  savedModels:[],
+  models:[],
+  presets:[],
+  history:[],
+  lastPrompt:'',
+  currentResults:[],
+  connected:false,
+  // New features
+  selectedLangs:['zh'],
+  pvals:[],   // [{name,content,active}]
+  suffixes:[], // [{name,content,active}]
+  imitates:[], // [{name,content,active}]  single-select
+  imageMode:false,
+  imageDataUrls:[]
 };
 
-const STORAGE_KEY = 'mj_prompt_gen_state';
+const STORAGE_KEY='mj_prompt_gen_state';
 
-//===== FIXED TOP HEIGHT CALC =====
-function updateScrollPadding() {
-  const fixedH = document.getElementById('fixedTop').offsetHeight;
-  document.getElementById('scrollContent').style.paddingTop = (fixedH + 10) + 'px';
+function updateScrollPadding(){
+  const fixedH=document.getElementById('fixedTop').offsetHeight;
+  document.getElementById('scrollContent').style.paddingTop=(fixedH+10)+'px';
 }
 
-// ===== COLLAPSE =====
-function toggleParamsCollapse() {
-  state.paramsCollapsed = !state.paramsCollapsed;
-  const bar = document.getElementById('paramsBar');
-  const btn = document.getElementById('collapseBtn');
-  if (state.paramsCollapsed) {
-    bar.classList.add('collapsed');
-    btn.classList.add('collapsed');
-  } else {
-    bar.classList.remove('collapsed');
-    btn.classList.remove('collapsed');
-  }
+function toggleParamsCollapse(){
+  state.paramsCollapsed=!state.paramsCollapsed;
+  const bar=document.getElementById('paramsBar');
+  const btn=document.getElementById('collapseBtn');
+  if(state.paramsCollapsed){bar.classList.add('collapsed');btn.classList.add('collapsed');}
+  else{bar.classList.remove('collapsed');btn.classList.remove('collapsed');}
   saveState();
-  setTimeout(updateScrollPadding, 350);
+  setTimeout(updateScrollPadding,350);
 }
 
-//===== SYSTEM PROMPT =====
-function buildSystemPrompt() {
-  const genderText = state.params.gender === 'male' ? '男性' : '女性';
-  let styleText = '';
-  if (state.params.style === 'impasto') {
-    styleText = '厚涂风格，画面质感厚重，具有油画般的肌理与光影层次';
-  } else if (state.params.style === 'anime_flat') {
-    styleText = '二次元平涂风格，线条清晰，色块分明，日系动画画风';
+//===== LANG =====
+function renderLangChecks(){
+  const g=document.getElementById('langCheckGroup');
+  g.innerHTML='';
+  ALL_LANGS.forEach(l=>{
+    const el=document.createElement('span');
+    el.className='lang-check-label'+(state.selectedLangs.includes(l.key)?' checked':'');
+    el.textContent=l.label;
+    el.onclick=()=>{toggleLang(l.key);};
+    g.appendChild(el);
+  });
+}
+function toggleLang(key){
+  const idx=state.selectedLangs.indexOf(key);
+  if(idx>=0){
+    if(state.selectedLangs.length<=1)return; // at least one
+    state.selectedLangs.splice(idx,1);
+  }else{
+    state.selectedLangs.push(key);
   }
-  const count = state.params.groupCount;
-  const arVal = getArValue();
+  saveState();renderLangChecks();
+}
+function getSelectedLangKeys(){return state.selectedLangs.length?state.selectedLangs:['zh'];}
 
-  let tokenInstruction = '';
-  const tokenVal = getTokenValue();
-  if (tokenVal) {
-    tokenInstruction = `\n- 每组提示词的文本长度应在 ${tokenVal} token 以上。`;
+// ===== SYSTEM PROMPT =====
+function buildSystemPrompt(){
+  const genderText=state.params.gender==='male'?'男性':'女性';
+  let styleText='';
+  if(state.params.style==='impasto') styleText='厚涂风格，画面质感厚重，具有油画般的肌理与光影层次';
+  else if(state.params.style==='anime_flat') styleText='二次元平涂风格，线条清晰，色块分明，日系动画画风';
+  const count=state.params.groupCount;
+
+  let tokenInstruction='';
+  const tokenVal=getTokenValue();
+  if(tokenVal) tokenInstruction=`\n- 每组提示词的文本长度应在 ${tokenVal} token 以上。`;
+
+  const langs=getSelectedLangKeys();
+  const langNames={zh:'中文',en:'英文',ja:'日文',ko:'韩文'};
+  const langList=langs.map(k=>langNames[k]||k);
+  const langFieldDesc=langs.map(k=>`"${k}"`).join(', ');
+
+  // Imitate instruction
+  let imitateInstruction='';
+  const activeImitate=state.imitates.find(m=>m.active);
+  if(activeImitate&&activeImitate.content){
+    imitateInstruction=`\n\n【架构模仿指令】\n你需要模仿以下参考提示词的架构和组织方式来生成新的提示词。分析这段参考提示词中各元素的构成比例与排列逻辑（如人物特写、服饰描述、动作神态、光影氛围、环境元素等的占比和顺序），然后按照相同的架构框架生成全新的内容。严禁复用参考提示词中的具体文字、意象或相近描述，只模仿其结构。\n参考提示词：\n${activeImitate.content}`;
   }
 
-  let systemContent = `你是一个专门用于生成Midjourney绘画提示词的助手。你的唯一任务是根据用户需求输出高质量的生图关键词。
+  let systemContent=`你是一个专门用于生成Midjourney绘画提示词的助手。你的唯一任务是根据用户需求输出高质量的生图关键词。
 
-核心能力：精通MJ/Niji模型的提示词结构与权重逻辑，擅长构建画面描述，精准的中英文画面转译能力。
-
-严格规则：
+核心规则：
 -禁止输出任何对话、问候、心理活动或解释性文字。
 - 只输出关键词组，不要任何额外说明。
 - 若用户输入模糊，自动补充高审美细节（如：光影、材质、构图）。
-- 角色性别锁定为：${genderText}。${styleText ? '\n- 画面风格偏向：' + styleText + '。' : ''}
+- 角色性别锁定为：${genderText}。${styleText?'\n- 画面风格偏向：'+styleText+'。':''}
 - 每次生成 ${count} 组关键词。${tokenInstruction}
+- 禁止在提示词文本中包含任何参数标记（如 --ar, --niji, --stylize, --raw等），这些参数由系统自动附加，你只需输出纯粹的画面描述关键词。
 
 输出格式要求：
-- 每组包含【中文提示词】和【英文提示词】，英文为中文的对应翻译。
-- 英文提示词为MJ可识别的标准格式（逗号分隔），包含 --ar ${arVal} 参数。
-- 使用JSON数组格式输出，每个元素包含 "zh" 和 "en" 两个字段。
-- 示例输出格式：
-[{"zh":"中文关键词描述 --ar ${arVal}","en":"English prompt description --ar ${arVal}"}]
-- 严格只输出JSON数组，不要输出其他任何内容。`;
+- 每组包含以下语言版本的提示词：${langList.join('、')}。
+- 各语言版本内容含义对应一致。
+- 使用JSON数组格式输出，每个元素包含 ${langFieldDesc} 字段。
+- 严格只输出JSON数组，不要输出其他任何内容。${imitateInstruction}`;
 
-  const activePresets = state.presets.filter(p => p.enabled);
-  activePresets.forEach(preset => {
-    const activeEntries = (preset.entries || []).filter(e => e.enabled !== false);
-    activeEntries.forEach(entry => {
-      systemContent += `\n\n[预设 - ${entry.role || 'system'}]: ${entry.content}`;
+  const activePresets=state.presets.filter(p=>p.enabled);
+  activePresets.forEach(preset=>{
+    const activeEntries=(preset.entries||[]).filter(e=>e.enabled!==false);
+    activeEntries.forEach(entry=>{
+      systemContent+=`\n\n[预设 - ${entry.role||'system'}]: ${entry.content}`;
     });
   });
 
   return systemContent;
 }
 
-function getArValue() {
-  if (state.params.ar === 'custom') {
-    return state.params.arCustom || '9:16';
-  }
+function getArValue(){
+  if(state.params.ar==='custom') return state.params.arCustom||'9:16';
   return state.params.ar;
 }
-
-function getTokenValue() {
-  if (state.params.tokenLimit === 'none') return null;
-  if (state.params.tokenLimit === 'custom') {
-    return state.params.tokenCustom ? parseInt(state.params.tokenCustom) : null;
-  }
+function getTokenValue(){
+  if(state.params.tokenLimit==='none')return null;
+  if(state.params.tokenLimit==='custom') return state.params.tokenCustom?parseInt(state.params.tokenCustom):null;
   return parseInt(state.params.tokenLimit);
 }
 
-// ===== PERSISTENCE =====
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-function loadState() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const s = JSON.parse(saved);
-      state = {...state, ...s};
-      if (!state.savedModels) state.savedModels = [];
-      if (!state.params.ar) state.params.ar = '9:16';
-      if (!state.params.arCustom) state.params.arCustom = '';
-      if (!state.params.tokenLimit) state.params.tokenLimit = 'none';
-      if (!state.params.tokenCustom) state.params.tokenCustom = '';
-      if (state.paramsCollapsed === undefined) state.paramsCollapsed = false;
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function loadState(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      const s=JSON.parse(saved);
+      state={...state,...s};
+      if(!state.savedModels)state.savedModels=[];
+      if(!state.params.ar)state.params.ar='9:16';
+      if(!state.params.arCustom)state.params.arCustom='';
+      if(!state.params.tokenLimit)state.params.tokenLimit='none';
+      if(!state.params.tokenCustom)state.params.tokenCustom='';
+      if(state.paramsCollapsed===undefined)state.paramsCollapsed=false;
+      if(!state.selectedLangs||!state.selectedLangs.length)state.selectedLangs=['zh'];
+      if(!state.pvals)state.pvals=[];
+      if(!state.suffixes)state.suffixes=[];
+      if(!state.imitates)state.imitates=[];
+      if(!state.imageDataUrls)state.imageDataUrls=[];
     }
-  } catch(e) {}
+  }catch(e){}
 }
 
-// ===== PARAMS =====
-function setParam(el) {
-  const param = el.dataset.param;
-  const val = el.dataset.val;
-  el.closest('.pill-group').querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+function setParam(el){
+  const param=el.dataset.param;const val=el.dataset.val;
+  el.closest('.pill-group').querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
-  if (param === 'model') state.params.model = val;
-  else if (param === 'gender') state.params.gender = val;
-  else if (param === 'style') state.params.style = val;
+  if(param==='model')state.params.model=val;
+  else if(param==='gender')state.params.gender=val;
+  else if(param==='style')state.params.style=val;
   saveParams();
 }
-function saveParams() {
-  state.params.stylize = parseInt(document.getElementById('stylizeVal').value) || 350;
-  state.params.raw = document.getElementById('rawToggle').checked;
-  state.params.groupCount = parseInt(document.getElementById('groupCount').value) || 3;
-
-  const arSel = document.getElementById('arSelect').value;
-  state.params.ar = arSel;
-  if (arSel === 'custom') {
-    state.params.arCustom = document.getElementById('arCustomInput').value.trim();
-  }
-
-  const tokenSel = document.getElementById('tokenSelect').value;
-  state.params.tokenLimit = tokenSel;
-  if (tokenSel === 'custom') {
-    state.params.tokenCustom = document.getElementById('tokenCustomInput').value.trim();
-  }
-
+function saveParams(){
+  state.params.stylize=parseInt(document.getElementById('stylizeVal').value)||350;
+  state.params.raw=document.getElementById('rawToggle').checked;
+  state.params.groupCount=parseInt(document.getElementById('groupCount').value)||3;
+  const arSel=document.getElementById('arSelect').value;
+  state.params.ar=arSel;
+  if(arSel==='custom')state.params.arCustom=document.getElementById('arCustomInput').value.trim();
+  const tokenSel=document.getElementById('tokenSelect').value;
+  state.params.tokenLimit=tokenSel;
+  if(tokenSel==='custom')state.params.tokenCustom=document.getElementById('tokenCustomInput').value.trim();
   saveState();
 }
-
-function handleArChange() {
-  const val = document.getElementById('arSelect').value;
-  document.getElementById('arCustomInput').style.display = val === 'custom' ? 'inline-block' : 'none';
+function handleArChange(){
+  const val=document.getElementById('arSelect').value;
+  document.getElementById('arCustomInput').style.display=val==='custom'?'inline-block':'none';
   saveParams();
 }
-
-function handleTokenChange() {
-  const val = document.getElementById('tokenSelect').value;
-  document.getElementById('tokenCustomInput').style.display = val === 'custom' ? 'inline-block' : 'none';
+function handleTokenChange(){
+  const val=document.getElementById('tokenSelect').value;
+  document.getElementById('tokenCustomInput').style.display=val==='custom'?'inline-block':'none';
   saveParams();
 }
-
-function restoreParams() {
-  document.getElementById('stylizeVal').value = state.params.stylize;
-  document.getElementById('rawToggle').checked = state.params.raw;
-  document.getElementById('groupCount').value = state.params.groupCount;
-  document.querySelectorAll('[data-param="model"]').forEach(p => {
-    p.classList.toggle('active', p.dataset.val === state.params.model);
-  });
-  document.querySelectorAll('[data-param="gender"]').forEach(p => {
-    p.classList.toggle('active', p.dataset.val === state.params.gender);
-  });
-  document.querySelectorAll('[data-param="style"]').forEach(p => {
-    p.classList.toggle('active', p.dataset.val === state.params.style);
-  });
-
-  const arSel = document.getElementById('arSelect');
-  arSel.value = state.params.ar;
-  if (state.params.ar === 'custom') {
-    document.getElementById('arCustomInput').style.display = 'inline-block';
-    document.getElementById('arCustomInput').value = state.params.arCustom || '';
-  }
-
-  const tokenSel = document.getElementById('tokenSelect');
-  tokenSel.value = state.params.tokenLimit;
-  if (state.params.tokenLimit === 'custom') {
-    document.getElementById('tokenCustomInput').style.display = 'inline-block';
-    document.getElementById('tokenCustomInput').value = state.params.tokenCustom || '';
-  }
-
-  // Restore collapse state
-  if (state.paramsCollapsed) {
-    document.getElementById('paramsBar').classList.add('collapsed');
-    document.getElementById('collapseBtn').classList.add('collapsed');
-  }
+function restoreParams(){
+  document.getElementById('stylizeVal').value=state.params.stylize;
+  document.getElementById('rawToggle').checked=state.params.raw;
+  document.getElementById('groupCount').value=state.params.groupCount;
+  document.querySelectorAll('[data-param="model"]').forEach(p=>{p.classList.toggle('active',p.dataset.val===state.params.model);});
+  document.querySelectorAll('[data-param="gender"]').forEach(p=>{p.classList.toggle('active',p.dataset.val===state.params.gender);});
+  document.querySelectorAll('[data-param="style"]').forEach(p=>{p.classList.toggle('active',p.dataset.val===state.params.style);});
+  const arSel=document.getElementById('arSelect');arSel.value=state.params.ar;
+  if(state.params.ar==='custom'){document.getElementById('arCustomInput').style.display='inline-block';document.getElementById('arCustomInput').value=state.params.arCustom||'';}
+  const tokenSel=document.getElementById('tokenSelect');tokenSel.value=state.params.tokenLimit;
+  if(state.params.tokenLimit==='custom'){document.getElementById('tokenCustomInput').style.display='inline-block';document.getElementById('tokenCustomInput').value=state.params.tokenCustom||'';}
+  if(state.paramsCollapsed){document.getElementById('paramsBar').classList.add('collapsed');document.getElementById('collapseBtn').classList.add('collapsed');}
 }
 
 // ===== TAGS =====
-function renderTags() {
-  const area = document.getElementById('tagsArea');
-  area.innerHTML = '';
-  state.tags.forEach((tag, i) => {
-    const el = document.createElement('button');
-    el.className = 'tag' + (tag.selected ? ' selected' : '');
-    el.innerHTML = `<span>${tag.text}</span><span class="remove-tag" onclick="event.stopPropagation();removeTag(${i})">✕</span>`;
-    el.onclick = () => toggleTag(i);
+let tagEditMode=false;
+function toggleTagEditMode(){
+  tagEditMode=!tagEditMode;
+  const btn=document.getElementById('editTagsBtn');
+  btn.classList.toggle('active',tagEditMode);
+  btn.textContent=tagEditMode?'完成':'编辑';
+  const area=document.getElementById('tagsArea');
+  area.classList.toggle('edit-mode',tagEditMode);
+}
+function renderTags(){
+  const area=document.getElementById('tagsArea');
+  area.innerHTML='';
+  area.classList.toggle('edit-mode',tagEditMode);
+  state.tags.forEach((tag,i)=>{
+    const el=document.createElement('button');
+    el.className='tag'+(tag.selected?' selected':'');
+    el.innerHTML=`<span>${tag.text}</span><span class="remove-tag" onclick="event.stopPropagation();removeTag(${i})">✕</span>`;
+    el.onclick=()=>toggleTag(i);
     area.appendChild(el);
-  });const addBtn = document.createElement('button');
-  addBtn.className = 'add-tag-btn';
-  addBtn.textContent = '+';
-  addBtn.title = '添加快捷标签';
-  addBtn.onclick = addTagPrompt;
+  });
+  const addBtn=document.createElement('button');
+  addBtn.className='add-tag-btn';addBtn.textContent='+';addBtn.title='添加快捷标签';addBtn.onclick=addTagPrompt;
   area.appendChild(addBtn);
 }
-function addTagPrompt() {
-  const text = prompt('输入标签关键词：');
-  if (text && text.trim()) {
-    state.tags.push({text: text.trim(), selected: false});
-    saveState();
-    renderTags();
-  }
+function addTagPrompt(){const text=prompt('输入标签关键词：');if(text&&text.trim()){state.tags.push({text:text.trim(),selected:false});saveState();renderTags();}}
+function removeTag(i){state.tags.splice(i,1);saveState();renderTags();updateInputFromTags();}
+function toggleTag(i){state.tags[i].selected=!state.tags[i].selected;saveState();renderTags();updateInputFromTags();}
+function updateInputFromTags(){
+  const input=document.getElementById('promptInput');
+  const currentText=input.value;
+  const selectedTexts=state.tags.filter(t=>t.selected).map(t=>t.text);
+  let base=currentText;
+  state.tags.forEach(t=>{base=base.replace(new RegExp('\\s*'+escapeRegex(t.text)+'\\s*','g'),'');});
+  base=base.trim();
+  if(selectedTexts.length){input.value=(base?base+' ':'')+selectedTexts.join(' ');}else{input.value=base;}
 }
-function removeTag(i) {
-  state.tags.splice(i, 1);
-  saveState();
-  renderTags();
-  updateInputFromTags();
-}
-function toggleTag(i) {
-  state.tags[i].selected = !state.tags[i].selected;
-  saveState();
-  renderTags();
-  updateInputFromTags();
-}
-function updateInputFromTags() {
-  const input = document.getElementById('promptInput');
-  const currentText = input.value;
-  const selectedTexts = state.tags.filter(t => t.selected).map(t => t.text);
-  let base = currentText;
-  state.tags.forEach(t => {
-    base = base.replace(new RegExp('\\s*' + escapeRegex(t.text) + '\\s*', 'g'), ' ');
+function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+
+// ===== PVALS =====
+function renderPvals(){
+  const area=document.getElementById('pvalArea');area.innerHTML='';
+  state.pvals.forEach((p,i)=>{
+    const el=document.createElement('span');
+    el.className='pval-item'+(p.active?' active':'');
+    el.innerHTML=`${escapeHtml(p.name)}<span class="pval-edit" onclick="event.stopPropagation();openEditPval('pval',${i})">✎</span>`;
+    el.onclick=(e)=>{if(e.target.classList.contains('pval-edit'))return;p.active=!p.active;saveState();renderPvals();};
+    area.appendChild(el);
   });
-  base = base.trim();
-  if (selectedTexts.length) {
-    input.value = (base ? base + ' ' : '') + selectedTexts.join(' ');
-  } else {
-    input.value = base;
-  }
 }
-function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function addPvalPrompt(){
+  const name=prompt('P值名称：');if(!name||!name.trim())return;
+  const content=prompt('P值内容（将在复制时附加到参数最后）：');if(content===null)return;
+  state.pvals.push({name:name.trim(),content:content.trim(),active:false});
+  saveState();renderPvals();setTimeout(updateScrollPadding,50);
+}
+
+// ===== SUFFIXES =====
+function renderSuffixes(){
+  const area=document.getElementById('suffixArea');area.innerHTML='';
+  state.suffixes.forEach((s,i)=>{
+    const el=document.createElement('span');
+    el.className='suffix-item'+(s.active?' active':'');
+    el.innerHTML=`${escapeHtml(s.name)}<span class="suffix-edit" onclick="event.stopPropagation();openEditPval('suffix',${i})">✎</span>`;
+    el.onclick=(e)=>{if(e.target.classList.contains('suffix-edit'))return;s.active=!s.active;saveState();renderSuffixes();};
+    area.appendChild(el);
+  });
+}
+function addSuffixPrompt(){
+  const name=prompt('尾缀词名称：');if(!name||!name.trim())return;
+  const content=prompt('尾缀词内容（将在复制时附加到文本后、参数前）：');if(content===null)return;
+  state.suffixes.push({name:name.trim(),content:content.trim(),active:false});
+  saveState();renderSuffixes();setTimeout(updateScrollPadding,50);
+}
+
+// ===== IMITATES =====
+function renderImitates(){
+  const area=document.getElementById('imitateArea');area.innerHTML='';
+  state.imitates.forEach((m,i)=>{
+    const el=document.createElement('span');
+    el.className='imitate-item'+(m.active?' active':'');
+    el.innerHTML=`${escapeHtml(m.name)}<span class="imi-edit" onclick="event.stopPropagation();openEditPval('imitate',${i})">✎</span>`;
+    el.onclick=(e)=>{
+      if(e.target.classList.contains('imi-edit'))return;
+      // single select
+      state.imitates.forEach((x,j)=>{x.active=(j===i?!x.active:false);});
+      saveState();renderImitates();
+    };
+    area.appendChild(el);
+  });
+}
+function addImitatePrompt(){
+  const name=prompt('模仿模板名称：');if(!name||!name.trim())return;
+  const content=prompt('粘贴要模仿的提示词（AI将模仿其架构）：');if(content===null)return;
+  state.imitates.push({name:name.trim(),content:content.trim(),active:false});
+  saveState();renderImitates();setTimeout(updateScrollPadding,50);
+}
+
+// ===== Edit PVal/Suffix/Imitate Modal =====
+let editPvalType='',editPvalIndex=-1;
+function openEditPval(type,index){
+  editPvalType=type;editPvalIndex=index;
+  let item;
+  if(type==='pval'){item=state.pvals[index];document.getElementById('editPvalTitle').textContent='编辑 P值';}
+  else if(type==='suffix'){item=state.suffixes[index];document.getElementById('editPvalTitle').textContent='编辑 尾缀词';}
+  else{item=state.imitates[index];document.getElementById('editPvalTitle').textContent='编辑 模仿模板';}
+  document.getElementById('editPvalName').value=item.name;
+  document.getElementById('editPvalContent').value=item.content;
+  document.getElementById('editPvalModal').classList.add('show');
+}
+function closeEditPval(){document.getElementById('editPvalModal').classList.remove('show');}
+function saveEditPval(){
+  const name=document.getElementById('editPvalName').value.trim();
+  const content=document.getElementById('editPvalContent').value.trim();
+  let arr=editPvalType==='pval'?state.pvals:editPvalType==='suffix'?state.suffixes:state.imitates;
+  if(editPvalIndex>=0&&editPvalIndex<arr.length){arr[editPvalIndex].name=name;arr[editPvalIndex].content=content;}
+  saveState();
+  if(editPvalType==='pval')renderPvals();else if(editPvalType==='suffix')renderSuffixes();else renderImitates();
+  closeEditPval();
+}
+function deleteEditPval(){
+  let arr=editPvalType==='pval'?state.pvals:editPvalType==='suffix'?state.suffixes:state.imitates;
+  if(editPvalIndex>=0&&editPvalIndex<arr.length)arr.splice(editPvalIndex,1);
+  saveState();
+  if(editPvalType==='pval')renderPvals();else if(editPvalType==='suffix')renderSuffixes();else renderImitates();
+  closeEditPval();setTimeout(updateScrollPadding,50);
+}
 
 // ===== SETTINGS TABS =====
-function switchSettingsTab(tab, el) {
-  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+function switchSettingsTab(tab,el){
+  document.querySelectorAll('.settings-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.settings-panel').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
-  if (tab === 'api') {
-    document.getElementById('panelApi').classList.add('active');} else {
-    document.getElementById('panelPreset').classList.add('active');
-  }
+  if(tab==='api')document.getElementById('panelApi').classList.add('active');
+  else document.getElementById('panelPreset').classList.add('active');
 }
 
 // ===== API =====
-function saveApiKey() {
-  const name = document.getElementById('apiName').value.trim() || 'Unnamed';
-  const url = document.getElementById('apiUrl').value.trim();
-  const key = document.getElementById('apiKey').value.trim();
-  if (!url || !key) { alert('请填写URL和API Key'); return; }
-
-  const editIdx = parseInt(document.getElementById('apiName').dataset.editIndex);
-  if (!isNaN(editIdx) && editIdx >= 0 && editIdx < state.apiKeys.length) {
-    state.apiKeys[editIdx] = {name, url, key};
-    delete document.getElementById('apiName').dataset.editIndex;
-  } else {
-    state.apiKeys.push({name, url, key});
-  }
-
-  if (state.activeApiIndex < 0) state.activeApiIndex = 0;
-  saveState();
-  renderApiKeys();
-  document.getElementById('apiName').value = '';
-  document.getElementById('apiUrl').value = '';
-  document.getElementById('apiKey').value = '';
+function saveApiKey(){
+  const name=document.getElementById('apiName').value.trim()||'Unnamed';
+  const url=document.getElementById('apiUrl').value.trim();
+  const key=document.getElementById('apiKey').value.trim();
+  if(!url||!key){alert('请填写URL和API Key');return;}
+  const editIdx=parseInt(document.getElementById('apiName').dataset.editIndex);
+  if(!isNaN(editIdx)&&editIdx>=0&&editIdx<state.apiKeys.length){state.apiKeys[editIdx]={name,url,key};delete document.getElementById('apiName').dataset.editIndex;}
+  else{state.apiKeys.push({name,url,key});}
+  if(state.activeApiIndex<0)state.activeApiIndex=0;
+  saveState();renderApiKeys();
+  document.getElementById('apiName').value='';document.getElementById('apiUrl').value='';document.getElementById('apiKey').value='';
 }
-function renderApiKeys() {
-  const list = document.getElementById('apiKeysList');
-  list.innerHTML = '';
-  state.apiKeys.forEach((k, i) => {
-    const el = document.createElement('div');
-    el.className = 'api-key-item';
-    el.innerHTML = `
-      <span class="key-name">${k.name}</span>
-      <span class="key-url">${k.url}</span>
-      <div class="key-actions">
-        <button class="small-btn" onclick="event.stopPropagation();fillApiKey(${i})" title="填充到编辑区">编辑</button>
-        <button class="small-btn ${state.activeApiIndex===i?'active-key':''}" onclick="event.stopPropagation();activateKey(${i})">${state.activeApiIndex===i?'✓ 使用中':'使用'}</button>
-        <button class="small-btn danger" onclick="event.stopPropagation();deleteKey(${i})">删除</button>
-      </div>`;
+function renderApiKeys(){
+  const list=document.getElementById('apiKeysList');list.innerHTML='';
+  state.apiKeys.forEach((k,i)=>{
+    const el=document.createElement('div');el.className='api-key-item';
+    el.innerHTML=`<span class="key-name">${k.name}</span><span class="key-url">${k.url}</span><div class="key-actions"><button class="small-btn" onclick="event.stopPropagation();fillApiKey(${i})" title="填充到编辑区">编辑</button><button class="small-btn ${state.activeApiIndex===i?'active-key':''}" onclick="event.stopPropagation();activateKey(${i})">${state.activeApiIndex===i?'✓ 使用中':'使用'}</button><button class="small-btn danger" onclick="event.stopPropagation();deleteKey(${i})">删除</button></div>`;
     list.appendChild(el);
   });
 }
-function fillApiKey(i) {
-  const k = state.apiKeys[i];
-  document.getElementById('apiName').value = k.name;
-  document.getElementById('apiUrl').value = k.url;
-  document.getElementById('apiKey').value = k.key;
-  document.getElementById('apiName').dataset.editIndex = i;
+function fillApiKey(i){const k=state.apiKeys[i];document.getElementById('apiName').value=k.name;document.getElementById('apiUrl').value=k.url;document.getElementById('apiKey').value=k.key;document.getElementById('apiName').dataset.editIndex=i;}
+function activateKey(i){state.activeApiIndex=i;saveState();renderApiKeys();updateConnectionStatus();}
+function deleteKey(i){state.apiKeys.splice(i,1);if(state.activeApiIndex>=state.apiKeys.length)state.activeApiIndex=state.apiKeys.length-1;saveState();renderApiKeys();updateConnectionStatus();}
+async function connectApi(){
+  if(state.activeApiIndex<0||!state.apiKeys[state.activeApiIndex]){alert('请先保存并选择一个API密钥');return;}
+  const api=state.apiKeys[state.activeApiIndex];
+  try{
+    const resp=await fetch(api.url.replace(/\/+$/,'')+'/models',{headers:{'Authorization':'Bearer '+api.key}});
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
+    const models=(data.data||[]).map(m=>m.id).sort();
+    state.models=models;state.connected=true;
+    if(models.length&&!state.selectedModel)state.selectedModel=models[0];
+    saveState();updateConnectionStatus();renderModelSelect();
+  }catch(e){alert('连接失败: '+e.message);state.connected=false;updateConnectionStatus();}
 }
-function activateKey(i) {
-  state.activeApiIndex = i;
-  saveState();
-  renderApiKeys();
-  updateConnectionStatus();
-}
-function deleteKey(i) {
-  state.apiKeys.splice(i, 1);
-  if (state.activeApiIndex >= state.apiKeys.length) state.activeApiIndex = state.apiKeys.length - 1;
-  saveState();
-  renderApiKeys();
-  updateConnectionStatus();
-}
-async function connectApi() {
-  if (state.activeApiIndex < 0 || !state.apiKeys[state.activeApiIndex]) {
-    alert('请先保存并选择一个API密钥');
-    return;
-  }
-  const api = state.apiKeys[state.activeApiIndex];
-  try {
-    const resp = await fetch(api.url.replace(/\/+$/, '') + '/models', {
-      headers: {'Authorization': 'Bearer ' + api.key}
-    });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    const models = (data.data || []).map(m => m.id).sort();
-    state.models = models;
-    state.connected = true;
-    if (models.length && !state.selectedModel) state.selectedModel = models[0];
-    saveState();
-    updateConnectionStatus();
-    renderModelSelect();
-  } catch(e) {
-    alert('连接失败: ' + e.message);
-    state.connected = false;
-    updateConnectionStatus();
-  }
-}
-function renderModelSelect() {
-  const group = document.getElementById('modelSelectGroup');
-  const select = document.getElementById('modelSelect');
-  if (state.models.length) {
-    group.style.display = 'block';
-    select.innerHTML = state.models.map(m => `<option value="${m}" ${m===state.selectedModel?'selected':''}>${m}</option>`).join('');
-  } else {
-    group.style.display = 'none';
-  }
+function renderModelSelect(){
+  const group=document.getElementById('modelSelectGroup');const select=document.getElementById('modelSelect');
+  if(state.models.length){group.style.display='block';select.innerHTML=state.models.map(m=>`<option value="${m}" ${m===state.selectedModel?'selected':''}>${m}</option>`).join('');}
+  else{group.style.display='none';}
   renderSavedModels();
 }
-function saveSelectedModel() {
-  state.selectedModel = document.getElementById('modelSelect').value;
-  saveState();
-  updateConnectionStatus();
+function saveModelToList(){
+  const model=document.getElementById('modelSelect').value;if(!model)return;
+  if(!state.savedModels.includes(model))state.savedModels.push(model);
+  state.selectedModel=model;saveState();renderSavedModels();updateConnectionStatus();
 }
-function saveModelToList() {
-  const model = document.getElementById('modelSelect').value;
-  if (!model) return;
-  if (!state.savedModels.includes(model)) {
-    state.savedModels.push(model);
-    saveState();
-  }
-  state.selectedModel = model;
-  saveState();
-  renderSavedModels();
-  updateConnectionStatus();
-}
-function renderSavedModels() {
-  const container = document.getElementById('savedModelsList');
-  container.innerHTML = '';
-  if (!state.savedModels || !state.savedModels.length) {
-    container.innerHTML = '<span style="font-size:11px;color:var(--text3);">暂无保存的模型</span>';
-    return;
-  }
-  state.savedModels.forEach((m, i) => {
-    const el = document.createElement('span');
-    el.className = 'saved-model-item' + (m === state.selectedModel ? ' active-model' : '');
-    el.innerHTML = `${m}<span class="remove-model" onclick="event.stopPropagation();removeSavedModel(${i})">✕</span>`;
-    el.onclick = () => {
-      state.selectedModel = m;
-      saveState();
-      renderSavedModels();
-      updateConnectionStatus();
-      const sel = document.getElementById('modelSelect');
-      if (sel) {
-        for (let opt of sel.options) {
-          if (opt.value === m) { sel.value = m; break; }
-        }
-      }
-    };
+function renderSavedModels(){
+  const container=document.getElementById('savedModelsList');container.innerHTML='';
+  if(!state.savedModels||!state.savedModels.length){container.innerHTML='<span style="font-size:11px;color:var(--text3);">暂无保存的模型</span>';return;}
+  state.savedModels.forEach((m,i)=>{
+    const el=document.createElement('span');
+    el.className='saved-model-item'+(m===state.selectedModel?' active-model':'');
+    el.innerHTML=`${m}<span class="remove-model" onclick="event.stopPropagation();removeSavedModel(${i})">✕</span>`;
+    el.onclick=()=>{state.selectedModel=m;saveState();renderSavedModels();updateConnectionStatus();const sel=document.getElementById('modelSelect');if(sel){for(let opt of sel.options){if(opt.value===m){sel.value=m;break;}}}};
     container.appendChild(el);
   });
 }
-function removeSavedModel(i) {
-  const removed = state.savedModels.splice(i, 1)[0];
-  if (state.selectedModel === removed && state.savedModels.length) {
-    state.selectedModel = state.savedModels[0];
-  }
-  saveState();
-  renderSavedModels();
-  updateConnectionStatus();
-}
-function updateConnectionStatus() {
-  const dot = document.getElementById('statusDot');
-  const text = document.getElementById('statusText');
-  const modelDisp = document.getElementById('modelDisplay');
-  if (state.connected && state.apiKeys[state.activeApiIndex]) {
-    dot.classList.add('connected');
-    text.textContent = '已连接 · ' + state.apiKeys[state.activeApiIndex].name;
-    modelDisp.textContent = state.selectedModel || '';
-  } else {
-    dot.classList.remove('connected');
-    text.textContent = '未连接';
-    modelDisp.textContent = '';
-  }
+function removeSavedModel(i){const removed=state.savedModels.splice(i,1)[0];if(state.selectedModel===removed&&state.savedModels.length)state.selectedModel=state.savedModels[0];saveState();renderSavedModels();updateConnectionStatus();}
+function updateConnectionStatus(){
+  const dot=document.getElementById('statusDot');const text=document.getElementById('statusText');const modelDisp=document.getElementById('modelDisplay');
+  if(state.connected&&state.apiKeys[state.activeApiIndex]){dot.classList.add('connected');text.textContent='已连接 · '+state.apiKeys[state.activeApiIndex].name;modelDisp.textContent=state.selectedModel||'';}
+  else{dot.classList.remove('connected');text.textContent='未连接';modelDisp.textContent='';}
 }
 
 // ===== PRESETS =====
-function importPreset(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      const preset = {
-        name: file.name.replace(/\.json$/i, ''),
-        enabled: true,
-        entries: [],
-        expanded: false
-      };
-      if (Array.isArray(data)) {
-        preset.entries = data.map((item, idx) => ({
-          id: idx, role: item.role || 'system',
-          content: item.content || item.text || JSON.stringify(item), enabled: true
-        }));
-      } else if (data.messages && Array.isArray(data.messages)) {
-        preset.entries = data.messages.map((item, idx) => ({
-          id: idx, role: item.role || 'system', content: item.content || '', enabled: true
-        }));
-      } else if (data.prompts && Array.isArray(data.prompts)) {
-        preset.entries = data.prompts.map((item, idx) => ({
-          id: idx, role: item.role || item.name || 'system',
-          content: item.content || item.prompt || '', enabled: item.enabled !== false
-        }));
-      } else if (data.prompt_order || data.prompts) {
-        const prompts = data.prompts || [];
-        preset.entries = prompts.map((item, idx) => ({
-          id: idx, role: item.role || item.name || 'system',
-          content: item.content || item.prompt || '', enabled: item.enabled !== false
-        }));
-      } else {
-        Object.entries(data).forEach(([key, val], idx) => {
-          if (typeof val === 'string') {
-            preset.entries.push({id: idx, role: key, content: val, enabled: true});
-          } else if (typeof val === 'object') {
-            preset.entries.push({id: idx, role: key, content: JSON.stringify(val, null, 2), enabled: true});
-          }
-        });
-      }
-      state.presets.push(preset);
-      saveState();
-      renderPresets();
-    } catch(err) {
-      alert('解析JSON失败: ' + err.message);
-    }
+function importPreset(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      const preset={name:file.name.replace(/\.json$/i,''),enabled:true,entries:[],expanded:false};
+      if(Array.isArray(data)){preset.entries=data.map((item,idx)=>({id:idx,role:item.role||'system',content:item.content||item.text||JSON.stringify(item),enabled:true}));}
+      else if(data.messages&&Array.isArray(data.messages)){preset.entries=data.messages.map((item,idx)=>({id:idx,role:item.role||'system',content:item.content||'',enabled:true}));}
+      else if(data.prompts&&Array.isArray(data.prompts)){preset.entries=data.prompts.map((item,idx)=>({id:idx,role:item.role||item.name||'system',content:item.content||item.prompt||'',enabled:item.enabled!==false}));}
+      else if(data.prompt_order||data.prompts){const prompts=data.prompts||[];preset.entries=prompts.map((item,idx)=>({id:idx,role:item.role||item.name||'system',content:item.content||item.prompt||'',enabled:item.enabled!==false}));}
+      else{Object.entries(data).forEach(([key,val],idx)=>{if(typeof val==='string')preset.entries.push({id:idx,role:key,content:val,enabled:true});else if(typeof val==='object')preset.entries.push({id:idx,role:key,content:JSON.stringify(val,null,2),enabled:true});});}
+      state.presets.push(preset);saveState();renderPresets();
+    }catch(err){alert('解析JSON失败: '+err.message);}
   };
-  reader.readAsText(file);
-  event.target.value = '';
+  reader.readAsText(file);event.target.value='';
 }
-function renderPresets() {
-  const list = document.getElementById('presetsList');
-  list.innerHTML = '';
-  state.presets.forEach((preset, pi) => {
-    const el = document.createElement('div');
-    el.className = 'preset-item';
-    el.innerHTML = `
-      <div class="preset-header" onclick="togglePresetExpand(${pi})">
-        <span class="preset-name">${preset.name}</span>
-        <div class="preset-actions" onclick="event.stopPropagation()">
-          <label class="toggle-switch" style="transform:scale(.75);">
-            <input type="checkbox" ${preset.enabled?'checked':''} onchange="togglePreset(${pi},this.checked)">
-            <span class="toggle-slider"></span>
-          </label>
-          <button class="small-btn danger" onclick="deletePreset(${pi})">删除</button>
-        </div>
-      </div>
-      <div class="preset-entries ${preset.expanded?'show':''}" id="presetEntries${pi}">
-        ${(preset.entries||[]).map((entry, ei) => `
-          <div class="entry-item" style="${entry.enabled===false?'opacity:.4':''}">
-            <span class="entry-role">${entry.role}</span>
-            <div class="entry-content">${escapeHtml(entry.content).substring(0, 200)}</div>
-            <div class="entry-actions">
-              <label class="toggle-switch" style="transform:scale(.6);">
-                <input type="checkbox" ${entry.enabled!==false?'checked':''} onchange="toggleEntry(${pi},${ei},this.checked)">
-                <span class="toggle-slider"></span>
-              </label>
-              <button class="small-btn" onclick="editEntry(${pi},${ei})">编辑</button>
-              <button class="small-btn danger" onclick="deleteEntry(${pi},${ei})">删除</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>`;
+function renderPresets(){
+  const list=document.getElementById('presetsList');list.innerHTML='';
+  state.presets.forEach((preset,pi)=>{
+    const el=document.createElement('div');el.className='preset-item';
+    el.innerHTML=`<div class="preset-header" onclick="togglePresetExpand(${pi})"><span class="preset-name">${preset.name}</span><div class="preset-actions" onclick="event.stopPropagation()"><label class="toggle-switch" style="transform:scale(.75);"><input type="checkbox" ${preset.enabled?'checked':''} onchange="togglePreset(${pi},this.checked)"><span class="toggle-slider"></span></label><button class="small-btn danger" onclick="deletePreset(${pi})">删除</button></div></div><div class="preset-entries ${preset.expanded?'show':''}" id="presetEntries${pi}">${(preset.entries||[]).map((entry,ei)=>`<div class="entry-item" style="${entry.enabled===false?'opacity:.4':''}"><span class="entry-role">${entry.role}</span><div class="entry-content">${escapeHtml(entry.content).substring(0,200)}</div><div class="entry-actions"><label class="toggle-switch" style="transform:scale(.6);"><input type="checkbox" ${entry.enabled!==false?'checked':''} onchange="toggleEntry(${pi},${ei},this.checked)"><span class="toggle-slider"></span></label><button class="small-btn" onclick="editEntry(${pi},${ei})">编辑</button><button class="small-btn danger" onclick="deleteEntry(${pi},${ei})">删除</button></div></div>`).join('')}</div>`;
     list.appendChild(el);
   });
 }
-function togglePresetExpand(pi) {
-  state.presets[pi].expanded = !state.presets[pi].expanded;
-  const el = document.getElementById('presetEntries' + pi);
-  if (el) el.classList.toggle('show');
-}
-function togglePreset(pi, val) { state.presets[pi].enabled = val; saveState(); }
-function deletePreset(pi) { state.presets.splice(pi, 1); saveState(); renderPresets(); }
-function toggleEntry(pi, ei, val) { state.presets[pi].entries[ei].enabled = val; saveState(); renderPresets(); }
-function deleteEntry(pi, ei) { state.presets[pi].entries.splice(ei, 1); saveState(); renderPresets(); }
+function togglePresetExpand(pi){state.presets[pi].expanded=!state.presets[pi].expanded;const el=document.getElementById('presetEntries'+pi);if(el)el.classList.toggle('show');}
+function togglePreset(pi,val){state.presets[pi].enabled=val;saveState();}
+function deletePreset(pi){state.presets.splice(pi,1);saveState();renderPresets();}
+function toggleEntry(pi,ei,val){state.presets[pi].entries[ei].enabled=val;saveState();renderPresets();}
+function deleteEntry(pi,ei){state.presets[pi].entries.splice(ei,1);saveState();renderPresets();}
 
-let editingPresetIndex = -1, editingEntryIndex = -1;
-function editEntry(pi, ei) {
-  editingPresetIndex = pi; editingEntryIndex = ei;
-  const entry = state.presets[pi].entries[ei];
-  document.getElementById('editEntryRole').value = entry.role;
-  document.getElementById('editEntryContent').value = entry.content;
-  document.getElementById('editEntryModal').classList.add('show');
+let editingPresetIndex=-1,editingEntryIndex=-1;
+function editEntry(pi,ei){editingPresetIndex=pi;editingEntryIndex=ei;const entry=state.presets[pi].entries[ei];document.getElementById('editEntryRole').value=entry.role;document.getElementById('editEntryContent').value=entry.content;document.getElementById('editEntryModal').classList.add('show');}
+function closeEditEntry(){document.getElementById('editEntryModal').classList.remove('show');}
+function saveEditedEntry(){if(editingPresetIndex>=0&&editingEntryIndex>=0){state.presets[editingPresetIndex].entries[editingEntryIndex].role=document.getElementById('editEntryRole').value;state.presets[editingPresetIndex].entries[editingEntryIndex].content=document.getElementById('editEntryContent').value;saveState();renderPresets();}closeEditEntry();}
+
+// ===== IMAGE MODE =====
+function handleImageGen(){
+  state.imageMode=!state.imageMode;
+  const area=document.getElementById('imagePreviewArea');
+  if(state.imageMode){
+    area.style.display='flex';
+    renderImagePreviews();
+  }else{
+    area.style.display='none';
+    state.imageDataUrls=[];saveState();}
 }
-function closeEditEntry() { document.getElementById('editEntryModal').classList.remove('show'); }
-function saveEditedEntry() {
-  if (editingPresetIndex >= 0 && editingEntryIndex >= 0) {
-    state.presets[editingPresetIndex].entries[editingEntryIndex].role = document.getElementById('editEntryRole').value;
-    state.presets[editingPresetIndex].entries[editingEntryIndex].content = document.getElementById('editEntryContent').value;
-    saveState(); renderPresets();
-  }
-  closeEditEntry();
+function renderImagePreviews(){
+  const area=document.getElementById('imagePreviewArea');
+  area.innerHTML='';
+  state.imageDataUrls.forEach((dataUrl,i)=>{
+    const item=document.createElement('div');item.className='image-preview-item';
+    item.innerHTML=`<img src="${dataUrl}"><div class="remove-img" onclick="removeImage(${i})">✕</div>`;
+    area.appendChild(item);
+  });const addBtn=document.createElement('button');addBtn.className='add-img-btn';addBtn.textContent='+';addBtn.title='添加图片';
+  addBtn.onclick=()=>document.getElementById('imageFileInput').click();
+  area.appendChild(addBtn);
 }
+function handleImageFiles(event){
+  const files=event.target.files;
+  Array.from(files).forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=(e)=>{state.imageDataUrls.push(e.target.result);saveState();renderImagePreviews();};
+    reader.readAsDataURL(file);
+  });event.target.value='';
+}
+function removeImage(i){state.imageDataUrls.splice(i,1);saveState();renderImagePreviews();}
 
 // ===== GENERATE =====
-let pendingAction = null;
-function handleGenerate() {
-  const input = document.getElementById('promptInput').value.trim();
-  if (!input) { alert('请输入画面描述'); return; }
-  if (state.currentResults.length > 0) {
-    pendingAction = 'generate';
-    showConfirmDialog();
-  } else {
-    doGenerate(input);
-  }
+let pendingAction=null;
+function handleGenerate(){
+  const input=document.getElementById('promptInput').value.trim();
+  if(!input&&!state.imageDataUrls.length){alert('请输入画面描述或添加图片');return;}
+  if(state.currentResults.length>0){pendingAction='generate';showConfirmDialog();}
+  else{doGenerate(input);}
 }
-function handleRefresh() {
-  if (!state.lastPrompt) { alert('没有上一次的指令可以刷新'); return; }
-  if (state.currentResults.length > 0) {
-    pendingAction = 'refresh';
-    showConfirmDialog();
-  } else {
-    doGenerate(state.lastPrompt);
-  }
+function handleRefresh(){
+  if(!state.lastPrompt){alert('没有上一次的指令可以刷新');return;}
+  if(state.currentResults.length>0){pendingAction='refresh';showConfirmDialog();}
+  else{doGenerate(state.lastPrompt);}
 }
-function showConfirmDialog() { document.getElementById('confirmDialog').classList.add('show'); }
-function cancelConfirm() { document.getElementById('confirmDialog').classList.remove('show'); pendingAction = null; }
-function confirmSave(save) {
+function showConfirmDialog(){document.getElementById('confirmDialog').classList.add('show');}
+function cancelConfirm(){document.getElementById('confirmDialog').classList.remove('show');pendingAction=null;}
+function confirmSave(save){
   document.getElementById('confirmDialog').classList.remove('show');
-  if (save && state.currentResults.length) {
-    const record = {
-      id: Date.now(), name: state.lastPrompt || '未命名',
-      time: new Date().toLocaleString(), prompt: state.lastPrompt,
-      results: [...state.currentResults], params: {...state.params}
-    };
-    state.history.unshift(record);
-    saveState();
+  if(save&&state.currentResults.length){
+    const record={id:Date.now(),name:state.lastPrompt||'未命名',time:new Date().toLocaleString(),prompt:state.lastPrompt,results:[state.currentResults],params:{...state.params}};
+    state.history.unshift(record);saveState();
   }
-  const prompt = pendingAction === 'refresh' ? state.lastPrompt : document.getElementById('promptInput').value.trim();
-  pendingAction = null;
-  doGenerate(prompt);
+  const prompt=pendingAction==='refresh'?state.lastPrompt:document.getElementById('promptInput').value.trim();
+  pendingAction=null;doGenerate(prompt);
 }
 
-async function doGenerate(promptText) {
-  if (!state.connected || state.activeApiIndex < 0) {
-    alert('请先在设置中配置并连接API'); return;
-  }
-  state.lastPrompt = promptText;
-  state.currentResults = [];
-  saveState();
-
-  document.getElementById('userPromptDisplay').style.display = 'block';
-  document.getElementById('userPromptText').textContent = promptText;
-  document.getElementById('resultsGrid').innerHTML = '';
-  document.getElementById('emptyState').style.display = 'none';
+async function doGenerate(promptText){
+  if(!state.connected||state.activeApiIndex<0){alert('请先在设置中配置并连接API');return;}
+  state.lastPrompt=promptText;state.currentResults=[];saveState();
+  document.getElementById('userPromptDisplay').style.display='block';
+  document.getElementById('userPromptText').textContent=promptText;
+  document.getElementById('resultsGrid').innerHTML='';
+  document.getElementById('emptyState').style.display='none';
   document.getElementById('loadingIndicator').classList.add('show');
 
-  const api = state.apiKeys[state.activeApiIndex];
-  const systemPrompt = buildSystemPrompt();
+  const api=state.apiKeys[state.activeApiIndex];
+  const systemPrompt=buildSystemPrompt();
 
-  try {
-    const resp = await fetch(api.url.replace(/\/+$/, '') + '/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + api.key },
-      body: JSON.stringify({
-        model: state.selectedModel,
-        messages: [
-          {role: 'system', content: systemPrompt},
-          {role: 'user', content: promptText}
-        ],
-        temperature: 0.9,
-        max_tokens: 4096
-      })
+  // Build messages
+  const messages=[{role:'system',content:systemPrompt}];
+
+  // If image mode with images, use vision format
+  if(state.imageMode&&state.imageDataUrls.length){
+    const contentParts=[];
+    if(promptText)contentParts.push({type:'text',text:promptText});
+    state.imageDataUrls.forEach(dataUrl=>{
+      contentParts.push({type:'image_url',image_url:{url:dataUrl}});
     });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    const content = data.choices?.[0]?.message?.content || '';
+    messages.push({role:'user',content:contentParts});
+  }else{
+    messages.push({role:'user',content:promptText});
+  }
+
+  try{
+    const resp=await fetch(api.url.replace(/\/+$/,'')+'/chat/completions',{
+      method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+api.key},
+      body:JSON.stringify({model:state.selectedModel,messages:messages,temperature:0.9,max_tokens:4096})
+    });
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
+    const content=data.choices?.[0]?.message?.content||'';
     parseAndDisplayResults(content);
-  } catch(e) {
-    document.getElementById('loadingIndicator').classList.remove('show');
-    alert('生成失败: ' + e.message);
-    document.getElementById('emptyState').style.display = 'block';
-  }
+  }catch(e){document.getElementById('loadingIndicator').classList.remove('show');alert('生成失败: '+e.message);document.getElementById('emptyState').style.display='block';}
 }
 
-function parseAndDisplayResults(content) {
+function parseAndDisplayResults(content){
   document.getElementById('loadingIndicator').classList.remove('show');
-  let results = [];
-  try {
-    let jsonStr = content;
-    const jsonMatch = content.match(/\[[\s\S]*\]/);
-    if (jsonMatch) jsonStr = jsonMatch[0];
-    results = JSON.parse(jsonStr);if (!Array.isArray(results)) results = [results];
-  } catch(e) {
-    const blocks = content.split(/```/g).filter(b => b.trim());
-    if (blocks.length >= 2) {
-      for (let i = 0; i < blocks.length; i += 2) {
-        results.push({ zh: blocks[i]?.trim() || '', en: blocks[i+1]?.trim() || blocks[i]?.trim() || '' });
-      }
-    } else {
-      results.push({zh: content, en: content});
-    }
+  let results=[];
+  try{
+    let jsonStr=content;const jsonMatch=content.match(/\[[\s\S]*\]/);
+    if(jsonMatch)jsonStr=jsonMatch[0];
+    results=JSON.parse(jsonStr);if(!Array.isArray(results))results=[results];
+  }catch(e){
+    // fallback: try to split
+    results=[{zh:content,en:content}];
   }
-  state.currentResults = results;
-  saveState();
-  renderResults(results);
+  // Normalize: ensure all selected langs exist
+  const langs=getSelectedLangKeys();
+  results=results.map(r=>{
+    const obj={};
+    langs.forEach(k=>{obj[k]=r[k]||r.zh||r.en||'';});
+    return obj;
+  });
+  state.currentResults=results;saveState();renderResults(results);
 }
 
-function renderResults(results) {
-  const grid = document.getElementById('resultsGrid');
-  grid.innerHTML = '';
-  if (!results.length) { document.getElementById('emptyState').style.display = 'block'; return; }
-  document.getElementById('emptyState').style.display = 'none';
-  results.forEach((r, i) => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    card.dataset.showLang = 'zh';
-    card.dataset.index = i;
-    card.innerHTML = `
-      <div class="card-header">
-        <span class="card-index">Group ${i + 1}</span>
-        <button class="swap-btn" onclick="event.stopPropagation();swapLang(this)" title="切换中/英文">⇄</button>
-      </div>
-      <div class="result-text">${escapeHtml(r.zh || '')}</div>`;
-    card.onclick = () => copyResult(card, r);
+function renderResults(results){
+  const grid=document.getElementById('resultsGrid');grid.innerHTML='';
+  if(!results.length){document.getElementById('emptyState').style.display='block';return;}
+  document.getElementById('emptyState').style.display='none';
+  const langs=getSelectedLangKeys();
+  const langNames={zh:'中文',en:'English',ja:'日本語',ko:'한국어'};
+  results.forEach((r,i)=>{
+    const card=document.createElement('div');card.className='result-card';
+    card.dataset.langIdx='0';card.dataset.index=i;
+    const currentLang=langs[0];
+    const canSwap=langs.length>1;
+    card.innerHTML=`<div class="card-header"><span class="card-index">Group ${i+1} · ${langNames[currentLang]||currentLang}</span><button class="swap-btn ${canSwap?'':'disabled'}" onclick="event.stopPropagation();cycleLang(this)" title="切换语言">⇄</button></div><div class="result-text">${escapeHtml(r[currentLang]||'')}</div>`;
+    card.onclick=()=>copyResult(card,r);
     grid.appendChild(card);
   });
 }
 
-function swapLang(btn) {
-  const card = btn.closest('.result-card');
-  const i = parseInt(card.dataset.index);
-  const r = state.currentResults[i];
-  const current = card.dataset.showLang;
-  const next = current === 'zh' ? 'en' : 'zh';
-  card.dataset.showLang = next;
-  card.querySelector('.result-text').textContent = r[next] || '';
+function cycleLang(btn){
+  const card=btn.closest('.result-card');
+  const langs=getSelectedLangKeys();if(langs.length<=1)return;
+  const i=parseInt(card.dataset.index);const r=state.currentResults[i];
+  let idx=parseInt(card.dataset.langIdx)||0;
+  idx=(idx+1)%langs.length;
+  card.dataset.langIdx=idx;
+  const lang=langs[idx];
+  const langNames={zh:'中文',en:'English',ja:'日本語',ko:'한국어'};
+  card.querySelector('.card-index').textContent=`Group ${i+1} · ${langNames[lang]||lang}`;
+  card.querySelector('.result-text').textContent=r[lang]||'';
 }
 
-function copyResult(card, r) {
-  const lang = card.dataset.showLang;
-  let text = r[lang] || '';
-  // Build suffix: model, stylize, raw (AR is already in the prompt from AI)
-  const suffixes = [];
-  suffixes.push(state.params.model);
-  suffixes.push('--stylize ' + state.params.stylize);
-  if (state.params.raw) suffixes.push('--raw');
-  text = text.trim() + ' ' + suffixes.join(' ');
-  navigator.clipboard.writeText(text).then(() => {
-    showCopyToast();
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta); showCopyToast();
-  });
+function copyResult(card,r){
+  const langs=getSelectedLangKeys();
+  const idx=parseInt(card.dataset.langIdx)||0;
+  const lang=langs[idx];
+  let text=(r[lang]||'').trim();
+
+  // Append active suffixes (after text, before params)
+  const activeSuffixes=state.suffixes.filter(s=>s.active).map(s=>s.content).filter(Boolean);
+  if(activeSuffixes.length) text+=' '+activeSuffixes.join(' ');
+
+  // Build param suffixes
+  const paramParts=[];
+  paramParts.push('--ar '+getArValue());
+  paramParts.push(state.params.model);
+  paramParts.push('--stylize '+state.params.stylize);
+  if(state.params.raw)paramParts.push('--raw');
+  // Active pvals at end
+  const activePvals=state.pvals.filter(p=>p.active).map(p=>p.content).filter(Boolean);
+  activePvals.forEach(v=>paramParts.push(v));
+
+  text+=' '+paramParts.join(' ');
+
+  navigator.clipboard.writeText(text).then(()=>{showCopyToast();}).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showCopyToast();});
 }
 
-function showCopyToast() {
-  const toast = document.getElementById('copyToast');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 1500);
-}
+function showCopyToast(){const toast=document.getElementById('copyToast');toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1500);}
 
 // ===== HISTORY =====
-function openHistory() { renderHistory(); document.getElementById('historyModal').classList.add('show'); }
-function closeHistory() { document.getElementById('historyModal').classList.remove('show'); }
-function renderHistory() {
-  const list = document.getElementById('historyList');
-  const empty = document.getElementById('historyEmpty');
-  list.innerHTML = '';
-  if (!state.history.length) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  state.history.forEach((h, hi) => {
-    const el = document.createElement('div');
-    el.className = 'history-item';
-    el.innerHTML = `
-      <div class="history-item-header">
-        <span class="history-item-name">${escapeHtml(h.name)}</span>
-        <div style="display:flex;gap:4px;align-items:center;">
-          <span class="history-item-time">${h.time}</span>
-          <button class="small-btn" onclick="event.stopPropagation();renameHistory(${hi})">重命名</button>
-          <button class="small-btn danger" onclick="event.stopPropagation();deleteHistory(${hi})">删除</button>
-        </div>
-      </div>
-      <div class="history-item-preview">${escapeHtml(h.prompt)}</div>
-      <div class="history-detail" id="histDetail${hi}">
-        <div class="history-results-grid">
-          ${(h.results||[]).map((r, ri) => `
-            <div class="history-result-card" onclick="event.stopPropagation();copyHistoryResult(${hi},${ri},'zh')">
-              <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                <span style="color:var(--accent2);font-size:10px;">Group ${ri+1}</span>
-                <button class="swap-btn" style="width:18px;height:18px;font-size:9px;" onclick="event.stopPropagation();swapHistoryLang(this,${hi},${ri})" title="切换">⇄</button>
-              </div>
-              <div class="hist-result-text" data-lang="zh">${escapeHtml(r.zh || '')}</div></div>
-          `).join('')}
-        </div>
-      </div>`;
-    el.onclick = () => { document.getElementById('histDetail' + hi).classList.toggle('show'); };
+function openHistory(){renderHistory();document.getElementById('historyModal').classList.add('show');}
+function closeHistory(){document.getElementById('historyModal').classList.remove('show');}
+function renderHistory(){
+  const list=document.getElementById('historyList');const empty=document.getElementById('historyEmpty');list.innerHTML='';
+  if(!state.history.length){empty.style.display='block';return;}
+  empty.style.display='none';
+  state.history.forEach((h,hi)=>{
+    const el=document.createElement('div');el.className='history-item';
+    el.innerHTML=`<div class="history-item-header"><span class="history-item-name">${escapeHtml(h.name)}</span><div style="display:flex;gap:4px;align-items:center;"><span class="history-item-time">${h.time}</span><button class="small-btn" onclick="event.stopPropagation();renameHistory(${hi})">重命名</button><button class="small-btn danger" onclick="event.stopPropagation();deleteHistory(${hi})">删除</button></div></div><div class="history-item-preview">${escapeHtml(h.prompt)}</div><div class="history-detail" id="histDetail${hi}"><div class="history-results-grid">${(h.results||[]).map((r,ri)=>`<div class="history-result-card" onclick="event.stopPropagation();copyHistoryResult(${hi},${ri})"><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:var(--accent2);font-size:10px;">Group ${ri+1}</span><button class="swap-btn" style="width:18px;height:18px;font-size:9px;" onclick="event.stopPropagation();swapHistoryLang(this,${hi},${ri})" title="切换">⇄</button></div><div class="hist-result-text" data-lang-idx="0">${escapeHtml(r[getSelectedLangKeys()[0]]||r.zh||'')}</div></div>`).join('')}</div></div>`;el.onclick=()=>{document.getElementById('histDetail'+hi).classList.toggle('show');};
     list.appendChild(el);
   });
 }
-function renameHistory(hi) {
-  const newName = prompt('输入新名称：', state.history[hi].name);
-  if (newName !== null && newName.trim()) { state.history[hi].name = newName.trim(); saveState(); renderHistory(); }
-}
-function deleteHistory(hi) { state.history.splice(hi, 1); saveState(); renderHistory(); }
-function copyHistoryResult(hi, ri, lang) {
-  const r = state.history[hi].results[ri];
-  const text = r[lang] || '';
+function renameHistory(hi){const newName=prompt('输入新名称：',state.history[hi].name);if(newName!==null&&newName.trim()){state.history[hi].name=newName.trim();saveState();renderHistory();}}
+function deleteHistory(hi){state.history.splice(hi,1);saveState();renderHistory();}
+function copyHistoryResult(hi,ri){
+  const langs=getSelectedLangKeys();const r=state.history[hi].results[ri];
+  const card=event.target.closest('.history-result-card');
+  const idx=parseInt(card?.querySelector('.hist-result-text')?.dataset?.langIdx)||0;
+  const lang=langs[idx]||'zh';
+  const text=r[lang]||r.zh||'';
   navigator.clipboard.writeText(text).then(showCopyToast).catch(showCopyToast);
 }
-function swapHistoryLang(btn, hi, ri) {
-  const card = btn.closest('.history-result-card');
-  const textEl = card.querySelector('.hist-result-text');
-  const current = textEl.dataset.lang;
-  const next = current === 'zh' ? 'en' : 'zh';
-  textEl.dataset.lang = next;
-  const r = state.history[hi].results[ri];
-  textEl.textContent = r[next] || '';
-  card.onclick = (e) => { if (e.target === btn) return; e.stopPropagation(); copyHistoryResult(hi, ri, next); };
+function swapHistoryLang(btn,hi,ri){
+  const card=btn.closest('.history-result-card');const textEl=card.querySelector('.hist-result-text');
+  const langs=getSelectedLangKeys();if(langs.length<=1)return;
+  let idx=parseInt(textEl.dataset.langIdx)||0;
+  idx=(idx+1)%langs.length;textEl.dataset.langIdx=idx;
+  const r=state.history[hi].results[ri];
+  textEl.textContent=r[langs[idx]]||r.zh||'';
 }
 
-// ===== SETTINGS =====
-function openSettings() {
-  renderApiKeys(); renderModelSelect(); renderPresets(); renderSavedModels();
-  document.getElementById('settingsModal').classList.add('show');
-}
-function closeSettings() { document.getElementById('settingsModal').classList.remove('show'); }
+function openSettings(){renderApiKeys();renderModelSelect();renderPresets();renderSavedModels();document.getElementById('settingsModal').classList.add('show');}
+function closeSettings(){document.getElementById('settingsModal').classList.remove('show');}
 
-function escapeHtml(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function escapeHtml(s){if(!s)return '';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function init() {
-  loadState();
-  restoreParams();
-  renderTags();
-  updateConnectionStatus();
-  if (state.currentResults.length) {
-    renderResults(state.currentResults);if (state.lastPrompt) {
-      document.getElementById('userPromptDisplay').style.display = 'block';
-      document.getElementById('userPromptText').textContent = state.lastPrompt;
-    }
+function init(){
+  loadState();restoreParams();renderTags();renderLangChecks();renderPvals();renderSuffixes();renderImitates();updateConnectionStatus();
+  if(state.currentResults.length){
+    renderResults(state.currentResults);
+    if(state.lastPrompt){document.getElementById('userPromptDisplay').style.display='block';document.getElementById('userPromptText').textContent=state.lastPrompt;}
   }
-  if (state.lastPrompt) {
-    document.getElementById('promptInput').value = state.lastPrompt;
-  }updateScrollPadding();
+  if(state.lastPrompt)document.getElementById('promptInput').value=state.lastPrompt;
+  updateScrollPadding();
 }
 
-document.addEventListener('DOMContentLoaded', init);
-window.addEventListener('resize', updateScrollPadding);
-
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('show');
-  });
-});
+document.addEventListener('DOMContentLoaded',init);
+window.addEventListener('resize',updateScrollPadding);
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.classList.remove('show');});});
 </script>
 </body>
 </html>
